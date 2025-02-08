@@ -3,6 +3,7 @@ from logic_bank.logic_bank import DeclareRule, Rule, LogicBank
 from database.models import *
 from decimal import Decimal
 from datetime import date, datetime
+import integration.kafka.kafka_producer as kafka_producer
 
 log = logging.getLogger(__name__)
 
