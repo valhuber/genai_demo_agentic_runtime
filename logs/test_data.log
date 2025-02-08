@@ -1,0 +1,233 @@
+INFO:response2code:Loading GPT response from system/genai/temp/response.json
+INFO:response2code:Successfully wrote test data code to database/test_data/test_data_code.py
+..  logic_logger: <Logger logic_logger (DEBUG)>
+..  db_url: sqlite:////opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/database/test_data/db.sqlite
+..  cwd: /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935
+..  python_loc: /usr/local/bin/python
+..  test_data_loader version: 1.1
+config.py - security disabled
+config.py - SQLALCHEMY_DATABASE_URI_AUTHENTICATION: sqlite:////opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/database/authentication_db.sqlite
+
+config.py - SQLALCHEMY_DATABASE_URI_LANDING: sqlite:////opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/database/db_spa.sqlite
+
+Loading rules from /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/logic/wg_rules
+/opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/docs/export/export.json does not exist
+
+The following rules have been loaded
+Rule Bank[0xffff828e09b0] (loaded 2025-02-05 14:26:30.189466)
+
+The following attributes have been referenced
+
+
+The following rules have been activated
+Rule Bank[0xffff828e09b0] (loaded 2025-02-05 14:26:30.189466)
+Logic Bank 01.20.25 - 1 rules loaded
+..  LogicBank activated
+
+Logic Phase:		ROW LOGIC		(session=0xffff82997ec0) (sqlalchemy before_flush)			
+..Customer[None] {Insert - client} id: None, name: Customer 1, balance: 150, credit_limit: 1000  row: 0xffff827ead20  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+Logic Phase:		COMMIT LOGIC		(session=0xffff82997ec0)   										
+Logic Phase:		AFTER_FLUSH LOGIC	(session=0xffff82997ec0)   										
+
+These Rules Fired (see Logic Phases, above, for actual order):		##
+
+Logic Phase:		COMPLETE(session=0xffff82997ec0))       	
+Logic Phase:		ROW LOGIC IGNORE RE-RAISE(session=0xffff82997ec0) (sqlalchemy before_flush)			
+
+Logic Phase:		ROW LOGIC		(session=0xffff82997ec0) (sqlalchemy before_flush)			
+..Customer[None] {Insert - client} id: None, name: Customer 2, balance: 275, credit_limit: 750  row: 0xffff84562c00  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+Logic Phase:		COMMIT LOGIC		(session=0xffff82997ec0)   										
+Logic Phase:		AFTER_FLUSH LOGIC	(session=0xffff82997ec0)   										
+
+These Rules Fired (see Logic Phases, above, for actual order):		##
+
+Logic Phase:		COMPLETE(session=0xffff82997ec0))       	
+Logic Phase:		ROW LOGIC IGNORE RE-RAISE(session=0xffff82997ec0) (sqlalchemy before_flush)			
+
+Logic Phase:		ROW LOGIC		(session=0xffff82997ec0) (sqlalchemy before_flush)			
+..Customer[None] {Insert - client} id: None, name: Customer 3, balance: 150, credit_limit: 1500  row: 0xffff831b33e0  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+Logic Phase:		COMMIT LOGIC		(session=0xffff82997ec0)   										
+Logic Phase:		AFTER_FLUSH LOGIC	(session=0xffff82997ec0)   										
+
+These Rules Fired (see Logic Phases, above, for actual order):		##
+
+Logic Phase:		COMPLETE(session=0xffff82997ec0))       	
+Logic Phase:		ROW LOGIC IGNORE RE-RAISE(session=0xffff82997ec0) (sqlalchemy before_flush)			
+
+Logic Phase:		ROW LOGIC		(session=0xffff82997ec0) (sqlalchemy before_flush)			
+..Customer[None] {Insert - client} id: None, name: Customer 4, balance: 0, credit_limit: 1200  row: 0xffff83175f70  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+Logic Phase:		COMMIT LOGIC		(session=0xffff82997ec0)   										
+Logic Phase:		AFTER_FLUSH LOGIC	(session=0xffff82997ec0)   										
+
+These Rules Fired (see Logic Phases, above, for actual order):		##
+
+Logic Phase:		COMPLETE(session=0xffff82997ec0))       	
+Logic Phase:		ROW LOGIC IGNORE RE-RAISE(session=0xffff82997ec0) (sqlalchemy before_flush)			
+
+Logic Phase:		ROW LOGIC		(session=0xffff82997ec0) (sqlalchemy before_flush)			
+..Order[None] {Insert - client} id: None, customer_id: 1, date_shipped: None, amount_total: 150, notes: Order 1 notes  row: 0xffff8257d940  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+Logic Phase:		COMMIT LOGIC		(session=0xffff82997ec0)   										
+Logic Phase:		AFTER_FLUSH LOGIC	(session=0xffff82997ec0)   										
+
+These Rules Fired (see Logic Phases, above, for actual order):		##
+
+Logic Phase:		COMPLETE(session=0xffff82997ec0))       	
+Logic Phase:		ROW LOGIC IGNORE RE-RAISE(session=0xffff82997ec0) (sqlalchemy before_flush)			
+
+Logic Phase:		ROW LOGIC		(session=0xffff82997ec0) (sqlalchemy before_flush)			
+..Order[None] {Insert - client} id: None, customer_id: 2, date_shipped: None, amount_total: 225, notes: Order 2 notes  row: 0xffff825fa240  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+Logic Phase:		COMMIT LOGIC		(session=0xffff82997ec0)   										
+Logic Phase:		AFTER_FLUSH LOGIC	(session=0xffff82997ec0)   										
+
+These Rules Fired (see Logic Phases, above, for actual order):		##
+
+Logic Phase:		COMPLETE(session=0xffff82997ec0))       	
+Logic Phase:		ROW LOGIC IGNORE RE-RAISE(session=0xffff82997ec0) (sqlalchemy before_flush)			
+
+Logic Phase:		ROW LOGIC		(session=0xffff82997ec0) (sqlalchemy before_flush)			
+..Order[None] {Insert - client} id: None, customer_id: 2, date_shipped: None, amount_total: 50, notes: Order 3 notes  row: 0xffff82fbcd40  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+Logic Phase:		COMMIT LOGIC		(session=0xffff82997ec0)   										
+Logic Phase:		AFTER_FLUSH LOGIC	(session=0xffff82997ec0)   										
+
+These Rules Fired (see Logic Phases, above, for actual order):		##
+
+Logic Phase:		COMPLETE(session=0xffff82997ec0))       	
+Logic Phase:		ROW LOGIC IGNORE RE-RAISE(session=0xffff82997ec0) (sqlalchemy before_flush)			
+
+Logic Phase:		ROW LOGIC		(session=0xffff82997ec0) (sqlalchemy before_flush)			
+..Order[None] {Insert - client} id: None, customer_id: 3, date_shipped: None, amount_total: 150, notes: Order 4 notes  row: 0xffff82625460  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+Logic Phase:		COMMIT LOGIC		(session=0xffff82997ec0)   										
+Logic Phase:		AFTER_FLUSH LOGIC	(session=0xffff82997ec0)   										
+
+These Rules Fired (see Logic Phases, above, for actual order):		##
+
+Logic Phase:		COMPLETE(session=0xffff82997ec0))       	
+Logic Phase:		ROW LOGIC IGNORE RE-RAISE(session=0xffff82997ec0) (sqlalchemy before_flush)			
+
+Logic Phase:		ROW LOGIC		(session=0xffff82997ec0) (sqlalchemy before_flush)			
+..Item[None] {Insert - client} id: None, order_id: 1, product_id: 1, quantity: 3, unit_price: 50, amount: 150  row: 0xffff82653f50  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+..Item[None] {Missing Parent: product} id: None, order_id: 1, product_id: 1, quantity: 3, unit_price: 50, amount: 150  row: 0xffff82653f50  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+
+Logic Phase:		ROW LOGIC		(session=0xffff82997ec0) (sqlalchemy before_flush)			
+..Item[None] {Insert - client} id: None, order_id: 2, product_id: 2, quantity: 2, unit_price: 25, amount: 50  row: 0xffff82e99070  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+..Item[None] {Missing Parent: product} id: None, order_id: 2, product_id: 2, quantity: 2, unit_price: 25, amount: 50  row: 0xffff82e99070  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+
+Logic Phase:		ROW LOGIC		(session=0xffff82997ec0) (sqlalchemy before_flush)			
+..Item[None] {Insert - client} id: None, order_id: 3, product_id: 3, quantity: 3, unit_price: 75, amount: 225  row: 0xffff825fa150  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+..Item[None] {Missing Parent: product} id: None, order_id: 3, product_id: 3, quantity: 3, unit_price: 75, amount: 225  row: 0xffff825fa150  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+
+Logic Phase:		ROW LOGIC		(session=0xffff82997ec0) (sqlalchemy before_flush)			
+..Item[None] {Insert - client} id: None, order_id: 4, product_id: 1, quantity: 3, unit_price: 50, amount: 150  row: 0xffff8266ec60  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+..Item[None] {Missing Parent: product} id: None, order_id: 4, product_id: 1, quantity: 3, unit_price: 50, amount: 150  row: 0xffff8266ec60  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+
+Logic Phase:		ROW LOGIC		(session=0xffff82997ec0) (sqlalchemy before_flush)			
+..Product[None] {Insert - client} id: None, name: Product 1, unit_price: 50  row: 0xffff8266e570  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+Logic Phase:		COMMIT LOGIC		(session=0xffff82997ec0)   										
+Logic Phase:		AFTER_FLUSH LOGIC	(session=0xffff82997ec0)   										
+
+These Rules Fired (see Logic Phases, above, for actual order):		##
+
+Logic Phase:		COMPLETE(session=0xffff82997ec0))       	
+Logic Phase:		ROW LOGIC IGNORE RE-RAISE(session=0xffff82997ec0) (sqlalchemy before_flush)			
+
+Logic Phase:		ROW LOGIC		(session=0xffff82997ec0) (sqlalchemy before_flush)			
+..Product[None] {Insert - client} id: None, name: Product 2, unit_price: 25  row: 0xffff82220ce0  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+Logic Phase:		COMMIT LOGIC		(session=0xffff82997ec0)   										
+Logic Phase:		AFTER_FLUSH LOGIC	(session=0xffff82997ec0)   										
+
+These Rules Fired (see Logic Phases, above, for actual order):		##
+
+Logic Phase:		COMPLETE(session=0xffff82997ec0))       	
+Logic Phase:		ROW LOGIC IGNORE RE-RAISE(session=0xffff82997ec0) (sqlalchemy before_flush)			
+
+Logic Phase:		ROW LOGIC		(session=0xffff82997ec0) (sqlalchemy before_flush)			
+..Product[None] {Insert - client} id: None, name: Product 3, unit_price: 75  row: 0xffff82221670  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+Logic Phase:		COMMIT LOGIC		(session=0xffff82997ec0)   										
+Logic Phase:		AFTER_FLUSH LOGIC	(session=0xffff82997ec0)   										
+
+These Rules Fired (see Logic Phases, above, for actual order):		##
+
+Logic Phase:		COMPLETE(session=0xffff82997ec0))       	
+Logic Phase:		ROW LOGIC IGNORE RE-RAISE(session=0xffff82997ec0) (sqlalchemy before_flush)			
+
+Logic Phase:		ROW LOGIC		(session=0xffff82997ec0) (sqlalchemy before_flush)			
+..Product[None] {Insert - client} id: None, name: Product 4, unit_price: 100  row: 0xffff825fa660  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+Logic Phase:		COMMIT LOGIC		(session=0xffff82997ec0)   										
+Logic Phase:		AFTER_FLUSH LOGIC	(session=0xffff82997ec0)   										
+
+These Rules Fired (see Logic Phases, above, for actual order):		##
+
+Logic Phase:		COMPLETE(session=0xffff82997ec0))       	
+Logic Phase:		ROW LOGIC IGNORE RE-RAISE(session=0xffff82997ec0) (sqlalchemy before_flush)			
+
+Logic Phase:		ROW LOGIC		(session=0xffff82997ec0) (sqlalchemy before_flush)			
+..Item[None] {Insert - client} id: None, order_id: 1, product_id: 1, quantity: 3, unit_price: 50, amount: 150  row: 0xffff8266e810  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+Logic Phase:		COMMIT LOGIC		(session=0xffff82997ec0)   										
+Logic Phase:		AFTER_FLUSH LOGIC	(session=0xffff82997ec0)   										
+
+These Rules Fired (see Logic Phases, above, for actual order):		##
+
+Logic Phase:		COMPLETE(session=0xffff82997ec0))       	
+Logic Phase:		ROW LOGIC IGNORE RE-RAISE(session=0xffff82997ec0) (sqlalchemy before_flush)			
+
+Logic Phase:		ROW LOGIC		(session=0xffff82997ec0) (sqlalchemy before_flush)			
+..Item[None] {Insert - client} id: None, order_id: 2, product_id: 2, quantity: 2, unit_price: 25, amount: 50  row: 0xffff8284bb00  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+Logic Phase:		COMMIT LOGIC		(session=0xffff82997ec0)   										
+Logic Phase:		AFTER_FLUSH LOGIC	(session=0xffff82997ec0)   										
+
+These Rules Fired (see Logic Phases, above, for actual order):		##
+
+Logic Phase:		COMPLETE(session=0xffff82997ec0))       	
+Logic Phase:		ROW LOGIC IGNORE RE-RAISE(session=0xffff82997ec0) (sqlalchemy before_flush)			
+
+Logic Phase:		ROW LOGIC		(session=0xffff82997ec0) (sqlalchemy before_flush)			
+..Item[None] {Insert - client} id: None, order_id: 3, product_id: 3, quantity: 3, unit_price: 75, amount: 225  row: 0xffff82e99070  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+Logic Phase:		COMMIT LOGIC		(session=0xffff82997ec0)   										
+Logic Phase:		AFTER_FLUSH LOGIC	(session=0xffff82997ec0)   										
+
+These Rules Fired (see Logic Phases, above, for actual order):		##
+
+Logic Phase:		COMPLETE(session=0xffff82997ec0))       	
+Logic Phase:		ROW LOGIC IGNORE RE-RAISE(session=0xffff82997ec0) (sqlalchemy before_flush)			
+
+Logic Phase:		ROW LOGIC		(session=0xffff82997ec0) (sqlalchemy before_flush)			
+..Item[None] {Insert - client} id: None, order_id: 4, product_id: 1, quantity: 3, unit_price: 50, amount: 150  row: 0xffff825fa150  session: 0xffff82997ec0  ins_upd_dlt: ins, initial: ins
+Logic Phase:		COMMIT LOGIC		(session=0xffff82997ec0)   										
+Logic Phase:		AFTER_FLUSH LOGIC	(session=0xffff82997ec0)   										
+
+These Rules Fired (see Logic Phases, above, for actual order):		##
+
+Logic Phase:		COMPLETE(session=0xffff82997ec0))       	
+*** Models.py Using TestBase ***
+..  db_url: sqlite:////opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/database/test_data/db.sqlite
+..  cwd: /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935
+..  python_loc: /usr/local/bin/python
+..  test_data_loader version: 1.1
+..  LogicBank activated
+print(Pass: 1)
+Error adding variable to session: Missing Parent: product
+print(Pass: 2)
+..  db_url: sqlite:////opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/database/test_data/db.sqlite
+..  cwd: /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935
+..  python_loc: /usr/local/bin/python
+..  test_data_loader version: 1.1
+..  LogicBank activated
+print(Pass: 1)
+Error adding variable to session: Missing Parent: product
+print(Pass: 2)
+Error: near line 11: UNIQUE constraint failed: customer.id
+Error: near line 12: UNIQUE constraint failed: customer.id
+Error: near line 13: UNIQUE constraint failed: customer.id
+Error: near line 14: UNIQUE constraint failed: customer.id
+Error: near line 21: UNIQUE constraint failed: product.id
+Error: near line 22: UNIQUE constraint failed: product.id
+Error: near line 23: UNIQUE constraint failed: product.id
+Error: near line 24: UNIQUE constraint failed: product.id
+Error: near line 34: UNIQUE constraint failed: order.id
+Error: near line 35: UNIQUE constraint failed: order.id
+Error: near line 36: UNIQUE constraint failed: order.id
+Error: near line 37: UNIQUE constraint failed: order.id
+Error: near line 49: UNIQUE constraint failed: item.id
+Error: near line 50: UNIQUE constraint failed: item.id
+Error: near line 51: UNIQUE constraint failed: item.id
+Error: near line 52: UNIQUE constraint failed: item.id

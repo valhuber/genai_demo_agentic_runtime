@@ -1,0 +1,406 @@
+
+API Logic Project Server Setup (01JKB807WMNRKECY2F1ZRGE935) Starting with CLI args: 
+.. api_logic_server_run.py
+
+Created August 03, 2024 09:34:01 at /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935
+
+Data Model Loaded, customizing...
+..discovered models: []
+LogicBank Activation - declare_logic.py
+Loading rules from /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/logic/wg_rules
+01JKB82RA96Z6AP9KMV92XAY4F rule file: logic/wg_rules/Customer_Balance_Constraint.py
+01JKB82RACXVTNXZT9DTFBTSQC rule file: logic/wg_rules/Customer_Balance_Derivation.py
+01JKB82RADYPSTZ7TEHKDNZ0C8 rule file: logic/wg_rules/Order_Amount_Total_Derivation.py
+01JKB82RAES56PEDRYNW0P4B0Y rule file: logic/wg_rules/Item_Amount_Derivation.py
+01JKB82RAEQKQRWV4S8R141YTQ rule file: logic/wg_rules/Copy_Item_Unit_Price.py
+01JKB82RAF54M07V3M86EE99VZ rule file: logic/wg_rules/Order_Kafka_Integration.py
+[32mLoading Rule Module Customer_Balance_Constraint 01JKB82RA96Z6AP9KMV92XAY4F [0m
+[32mLoading Rule Module Customer_Balance_Derivation 01JKB82RACXVTNXZT9DTFBTSQC [0m
+[32mLoading Rule Module Order_Amount_Total_Derivation 01JKB82RADYPSTZ7TEHKDNZ0C8 [0m
+[32mLoading Rule Module Item_Amount_Derivation 01JKB82RAES56PEDRYNW0P4B0Y [0m
+[32mLoading Rule Module Copy_Item_Unit_Price 01JKB82RAEQKQRWV4S8R141YTQ [0m
+[32mLoading Rule Module Order_Kafka_Integration 01JKB82RAF54M07V3M86EE99VZ [0m
+
+The following rules have been loaded
+Rule Bank[0xffff8d0e3ec0] (loaded 2025-02-05 14:26:36.807193)
+Mapped Class[Customer] rules:
+  Constraint Function: None 
+  Derive <class 'database.models.Customer'>.balance as Sum(Order.amount_total Where Rule.sum(derive=Customer.balance, as_sum_of=Order.amount_total, where=lambda row: row.date_shipped is None) - <function init_rule.<locals>.<lambda> at 0xffff8ce2d120>)
+Mapped Class[Order] rules:
+  Derive <class 'database.models.Order'>.amount_total as Sum(Item.amount Where  - None)
+  RowEvent Order.send_row_to_kafka() 
+Mapped Class[Item] rules:
+  Derive <class 'database.models.Item'>.amount as Formula (-1): Rule.formula(derive=Item.amount, as_expression=la [...]
+  Derive <class 'database.models.Item'>.unit_price as Copy(product.unit_price)
+
+The following attributes have been referenced
+
+..Customer.balance: constraint
+..Customer.credit_limit: constraint
+..Customer.balance: aggregate derivation
+..Order.date_shipped: aggregate where clause
+..Order.amount_total: sum derived from
+..Order.amount_total: aggregate derivation
+..Item.amount: sum derived from
+..Item.quantity: - formula
+..Item.unit_price: - formula
+..Item.unit_price: parent copy derivation
+..Product.unit_price: parent copy from
+
+The following rules have been activated
+Rule Bank[0xffff8d0e3ec0] (loaded 2025-02-05 14:26:36.807193)
+Mapped Class[Customer] rules:
+  Constraint Function: None 
+  Derive <class 'database.models.Customer'>.balance as Sum(Order.amount_total Where Rule.sum(derive=Customer.balance, as_sum_of=Order.amount_total, where=lambda row: row.date_shipped is None) - <function init_rule.<locals>.<lambda> at 0xffff8ce2d120>)
+Mapped Class[Order] rules:
+  Derive <class 'database.models.Order'>.amount_total as Sum(Item.amount Where  - None)
+  RowEvent Order.send_row_to_kafka() 
+Mapped Class[Item] rules:
+  Derive <class 'database.models.Item'>.amount as Formula (1): Rule.formula(derive=Item.amount, as_expression=la [...]
+  Derive <class 'database.models.Item'>.unit_price as Copy(product.unit_price)
+Logic Bank 01.20.25 - 10 rules loaded
+Exposing /Customer
+Exposing /Item
+Exposing /Order
+Exposing /Product
+Declare   API - api/expose_api_models, endpoint for each table on localhost:8282, customizing...
+..discovered services: ['ontimize_api.py', 'system.py', 'new_service.py', 'newer_service.py']
+Kafka Consumer not activated
+
+API Logic Project loaded (not WSGI), version 14.03.07
+.. startup message: normal start
+ (running from docker container at flask_host: 0.0.0.0 - may require refresh)
+
+API Logic Project (name: 01JKB807WMNRKECY2F1ZRGE935) starting:
+..Explore data and API at http_scheme://swagger_host:port http://localhost:6002   *
+.... with flask_host: 0.0.0.0
+.... and  swagger_port: 8282
+
+Alert: These following are **Critical** to unlocking value for project: 01JKB807WMNRKECY2F1ZRGE935:
+.. see logic.declare_logic.py       -- 
+.. see security.declare_security.py -- ALERT:  *** Security Not Enabled ***
+
+
+*************************************************************************
+*   Startup Instructions: Open your Browser at: http://localhost:6002   *
+*************************************************************************
+
+ * Serving Flask app 'API Logic Server'
+ * Debug mode: on
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:6002
+ * Running on http://172.17.0.3:6002
+[33mPress CTRL+C to quit[0m
+ * Restarting with stat
+
+API Logic Project Server Setup (01JKB807WMNRKECY2F1ZRGE935) Starting with CLI args: 
+.. api_logic_server_run.py
+
+Created August 03, 2024 09:34:01 at /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935
+
+Data Model Loaded, customizing...
+..discovered models: []
+LogicBank Activation - declare_logic.py
+Loading rules from /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/logic/wg_rules
+01JKB82RA96Z6AP9KMV92XAY4F rule file: logic/wg_rules/Customer_Balance_Constraint.py
+01JKB82RACXVTNXZT9DTFBTSQC rule file: logic/wg_rules/Customer_Balance_Derivation.py
+01JKB82RADYPSTZ7TEHKDNZ0C8 rule file: logic/wg_rules/Order_Amount_Total_Derivation.py
+01JKB82RAES56PEDRYNW0P4B0Y rule file: logic/wg_rules/Item_Amount_Derivation.py
+01JKB82RAEQKQRWV4S8R141YTQ rule file: logic/wg_rules/Copy_Item_Unit_Price.py
+01JKB82RAF54M07V3M86EE99VZ rule file: logic/wg_rules/Order_Kafka_Integration.py
+[32mLoading Rule Module Customer_Balance_Constraint 01JKB82RA96Z6AP9KMV92XAY4F [0m
+[32mLoading Rule Module Customer_Balance_Derivation 01JKB82RACXVTNXZT9DTFBTSQC [0m
+[32mLoading Rule Module Order_Amount_Total_Derivation 01JKB82RADYPSTZ7TEHKDNZ0C8 [0m
+[32mLoading Rule Module Item_Amount_Derivation 01JKB82RAES56PEDRYNW0P4B0Y [0m
+[32mLoading Rule Module Copy_Item_Unit_Price 01JKB82RAEQKQRWV4S8R141YTQ [0m
+[32mLoading Rule Module Order_Kafka_Integration 01JKB82RAF54M07V3M86EE99VZ [0m
+
+The following rules have been loaded
+Rule Bank[0xffff8c0a5a60] (loaded 2025-02-05 14:26:37.740515)
+Mapped Class[Customer] rules:
+  Constraint Function: None 
+  Derive <class 'database.models.Customer'>.balance as Sum(Order.amount_total Where Rule.sum(derive=Customer.balance, as_sum_of=Order.amount_total, where=lambda row: row.date_shipped is None) - <function init_rule.<locals>.<lambda> at 0xffff87e39120>)
+Mapped Class[Order] rules:
+  Derive <class 'database.models.Order'>.amount_total as Sum(Item.amount Where  - None)
+  RowEvent Order.send_row_to_kafka() 
+Mapped Class[Item] rules:
+  Derive <class 'database.models.Item'>.amount as Formula (-1): Rule.formula(derive=Item.amount, as_expression=la [...]
+  Derive <class 'database.models.Item'>.unit_price as Copy(product.unit_price)
+
+The following attributes have been referenced
+
+..Customer.balance: constraint
+..Customer.credit_limit: constraint
+..Customer.balance: aggregate derivation
+..Order.date_shipped: aggregate where clause
+..Order.amount_total: sum derived from
+..Order.amount_total: aggregate derivation
+..Item.amount: sum derived from
+..Item.quantity: - formula
+..Item.unit_price: - formula
+..Item.unit_price: parent copy derivation
+..Product.unit_price: parent copy from
+
+The following rules have been activated
+Rule Bank[0xffff8c0a5a60] (loaded 2025-02-05 14:26:37.740515)
+Mapped Class[Customer] rules:
+  Constraint Function: None 
+  Derive <class 'database.models.Customer'>.balance as Sum(Order.amount_total Where Rule.sum(derive=Customer.balance, as_sum_of=Order.amount_total, where=lambda row: row.date_shipped is None) - <function init_rule.<locals>.<lambda> at 0xffff87e39120>)
+Mapped Class[Order] rules:
+  Derive <class 'database.models.Order'>.amount_total as Sum(Item.amount Where  - None)
+  RowEvent Order.send_row_to_kafka() 
+Mapped Class[Item] rules:
+  Derive <class 'database.models.Item'>.amount as Formula (1): Rule.formula(derive=Item.amount, as_expression=la [...]
+  Derive <class 'database.models.Item'>.unit_price as Copy(product.unit_price)
+Logic Bank 01.20.25 - 10 rules loaded
+Exposing /Customer
+Exposing /Item
+Exposing /Order
+Exposing /Product
+Declare   API - api/expose_api_models, endpoint for each table on localhost:8282, customizing...
+..discovered services: ['ontimize_api.py', 'system.py', 'new_service.py', 'newer_service.py']
+Kafka Consumer not activated
+
+API Logic Project loaded (not WSGI), version 14.03.07
+.. startup message: normal start
+ (running from docker container at flask_host: 0.0.0.0 - may require refresh)
+
+API Logic Project (name: 01JKB807WMNRKECY2F1ZRGE935) starting:
+..Explore data and API at http_scheme://swagger_host:port http://localhost:6002   *
+.... with flask_host: 0.0.0.0
+.... and  swagger_port: 8282
+
+Alert: These following are **Critical** to unlocking value for project: 01JKB807WMNRKECY2F1ZRGE935:
+.. see logic.declare_logic.py       -- 
+.. see security.declare_security.py -- ALERT:  *** Security Not Enabled ***
+
+
+*************************************************************************
+*   Startup Instructions: Open your Browser at: http://localhost:6002   *
+*************************************************************************
+
+ * Debugger is active!
+ * Debugger PIN: 141-353-979
+127.0.0.1 - - [05/Feb/2025 14:26:44] "GET /ui/admin/admin.yaml?v=1738765604017 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:44] "GET /ui/admin/admin.yaml?v=1738765604478 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:44] "GET /01JKB807WMNRKECY2F1ZRGE935/SPAPage?include=SectionList&page[limit]=10&page[number]=1&page[offset]=0&page[size]=10&sort=name HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:44] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer?include=%2Ball&page[limit]=5&page[number]=1&page[offset]=0&page[size]=5&sort=name HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:44] "GET /01JKB807WMNRKECY2F1ZRGE935/Item?include=order,product,order,product,%2Ball&page[limit]=5&page[number]=1&page[offset]=0&page[size]=5&sort=id HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:44] "GET /01JKB807WMNRKECY2F1ZRGE935/Order?include=customer,customer,%2Ball&page[limit]=5&page[number]=1&page[offset]=0&page[size]=5&sort=id HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:44] "GET /01JKB807WMNRKECY2F1ZRGE935/Product?include=%2Ball&page[limit]=5&page[number]=1&page[offset]=0&page[size]=5&sort=name HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:46] "GET /ui/admin/admin.yaml?v=1738765606393 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:48] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer?include=&page[limit]=25&page[number]=1&page[offset]=0&page[size]=25&sort=name HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:48] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer?include=&page[limit]=25&page[number]=1&page[offset]=0&page[size]=25&sort=-id HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:50] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer/1?include=OrderList,OrderList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:50] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer/1?include=OrderList,OrderList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:50] "GET /01JKB807WMNRKECY2F1ZRGE935/Order?filter[customer_id]=1&page[limit]=25&page[offset]=0&sort=-id&include=ItemList,customer,ItemList,customer HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:53] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer/1?include=OrderList,OrderList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:53] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer/1?include=OrderList,OrderList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:53] "GET /01JKB807WMNRKECY2F1ZRGE935/Order/1?include=ItemList,customer,ItemList,customer&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:53] "GET /01JKB807WMNRKECY2F1ZRGE935/Order/1?include=ItemList,customer,ItemList,customer&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:53] "GET /01JKB807WMNRKECY2F1ZRGE935/Item?filter[order_id]=1&page[limit]=25&page[offset]=0&sort=-id&include=order,product,order,product HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:53] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer/1?include=OrderList,OrderList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:54] "GET /01JKB807WMNRKECY2F1ZRGE935/Product/1?include=ItemList,ItemList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:57] "GET /01JKB807WMNRKECY2F1ZRGE935/Product?include=&page[limit]=25&page[number]=1&page[offset]=0&page[size]=25&sort=-id HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:57] "GET /01JKB807WMNRKECY2F1ZRGE935/Order?include=customer,customer&page[limit]=25&page[number]=1&page[offset]=0&page[size]=25&sort=-id HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:57] "GET /01JKB807WMNRKECY2F1ZRGE935/Product?filter[id]=1&include=&page[limit]=10&page[number]=1&page[offset]=0&page[size]=10&sort=name HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:26:57] "GET /01JKB807WMNRKECY2F1ZRGE935/Order?filter[id]=1&include=customer,customer&page[limit]=10&page[number]=1&page[offset]=0&page[size]=10&sort=id HTTP/1.0" 200 -
+
+Logic Phase:		ROW LOGIC		(session=0xffff8738eea0) (sqlalchemy before_flush)			
+..Item[1] {Update - client} id: 1, order_id: 1, product_id: 1, quantity:  [3-->] 3999, unit_price: 50, amount: 150  row: 0xffff8728ee40  session: 0xffff8738eea0  ins_upd_dlt: upd, initial: upd
+..Item[1] {Formula amount} id: 1, order_id: 1, product_id: 1, quantity:  [3-->] 3999, unit_price: 50, amount:  [150-->] 199950  row: 0xffff8728ee40  session: 0xffff8738eea0  ins_upd_dlt: upd, initial: upd
+....Order[1] {Update - Adjusting order: amount_total} id: 1, customer_id: 1, date_shipped: None, amount_total:  [150.0000000000-->] 199950.0000000000, notes: Order 1 notes  row: 0xffff872bc9b0  session: 0xffff8738eea0  ins_upd_dlt: upd, initial: upd
+......Customer[1] {Update - Adjusting customer: balance} id: 1, name: Customer 1, balance:  [150.0000000000-->] 199950.0000000000, credit_limit: 1000.0000000000  row: 0xffff872bcbc0  session: 0xffff8738eea0  ins_upd_dlt: upd, initial: upd
+......Customer[1] {Constraint Failure: Customer balance (199950.0000000000) exceeds credit limit (1000.0000000000)} id: 1, name: Customer 1, balance:  [150.0000000000-->] 199950.0000000000, credit_limit: 1000.0000000000  row: 0xffff872bcbc0  session: 0xffff8738eea0  ins_upd_dlt: upd, initial: upd
+
+These Rules Fired (see Logic Phases, above, for actual order):		##
+  Customer		##
+    1. Constraint Function: None 		##
+    2. Derive <class 'database.models.Customer'>.balance as Sum(Order.amount_total Where Rule.sum(derive=Customer.balance, as_sum_of=Order.amount_total, where=lambda row: row.date_shipped is None) - <function init_rule.<locals>.<lambda> at 0xffff87e39120>)		##
+  Item		##
+    3. Derive <class 'database.models.Item'>.amount as Formula (1): Rule.formula(derive=Item.amount, as_expression=la [...]		##
+  Order		##
+    4. Derive <class 'database.models.Order'>.amount_total as Sum(Item.amount Where  - None)		##
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/safrs/safrs_api.py", line 674, in method_wrapper
+    result = fun(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/safrs/jsonapi.py", line 324, in patch
+    instance = self._patch_instance(data, id)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/safrs/jsonapi.py", line 360, in _patch_instance
+    instance._s_patch(**attributes)
+  File "/usr/local/lib/python3.12/site-packages/safrs/base.py", line 485, in _s_patch
+    safrs.DB.session.commit()
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/orm/scoping.py", line 553, in commit
+    return self._proxied.commit()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1906, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1221, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1196, in _prepare_impl
+    self.session.flush()
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 4154, in flush
+    self._flush(objects)
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 4183, in _flush
+    self.dispatch.before_flush(self, flush_context, objects)
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/event/attr.py", line 378, in __call__
+    fn(*args, **kw)
+  File "/usr/local/lib/python3.12/site-packages/logic_bank/exec_trans_logic/listeners.py", line 65, in before_flush
+    logic_row.update(reason="client")
+  File "/usr/local/lib/python3.12/site-packages/logic_bank/exec_row_logic/logic_row.py", line 1250, in update
+    self._adjust_parent_aggregates()  # parent chaining (sum / count adjustments)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/logic_bank/exec_row_logic/logic_row.py", line 1189, in _adjust_parent_aggregates
+    parent_adjuster.save_altered_parents(do_not_adjust_list=do_not_adjust_list)  # iff req'd (altered only)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/logic_bank/exec_row_logic/logic_row.py", line 1407, in save_altered_parents
+    parent_logic_row.update(
+  File "/usr/local/lib/python3.12/site-packages/logic_bank/exec_row_logic/logic_row.py", line 1250, in update
+    self._adjust_parent_aggregates()  # parent chaining (sum / count adjustments)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/logic_bank/exec_row_logic/logic_row.py", line 1189, in _adjust_parent_aggregates
+    parent_adjuster.save_altered_parents(do_not_adjust_list=do_not_adjust_list)  # iff req'd (altered only)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/logic_bank/exec_row_logic/logic_row.py", line 1407, in save_altered_parents
+    parent_logic_row.update(
+  File "/usr/local/lib/python3.12/site-packages/logic_bank/exec_row_logic/logic_row.py", line 1251, in update
+    self._constraints()
+  File "/usr/local/lib/python3.12/site-packages/logic_bank/exec_row_logic/logic_row.py", line 795, in _constraints
+    each_constraint.execute(self)
+  File "/usr/local/lib/python3.12/site-packages/logic_bank/rule_type/constraint.py", line 87, in execute
+    ll.constraint_event(message=msg, logic_row=logic_row, constraint=self)
+  File "/opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/config/server_setup.py", line 282, in constraint_handler
+    raise ValidationErrorExt(message=message, detail=detail)
+config.server_setup.ValidationErrorExt
+127.0.0.1 - - [05/Feb/2025 14:27:01] "[31m[1mPATCH /01JKB807WMNRKECY2F1ZRGE935/Item/1 HTTP/1.0[0m" 400 -
+127.0.0.1 - - [05/Feb/2025 14:27:03] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer?include=&page[limit]=25&page[number]=1&page[offset]=0&page[size]=25&sort=name HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:27:03] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer?include=&page[limit]=25&page[number]=1&page[offset]=0&page[size]=25&sort=-id HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:27:05] "GET /01JKB807WMNRKECY2F1ZRGE935/Order?filter[customer_id]=1&page[limit]=25&page[offset]=0&sort=-id&include=ItemList,customer,ItemList,customer HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:27:05] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer/1?include=OrderList,OrderList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:27:05] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer/1?include=OrderList,OrderList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:27:08] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer?include=&page[limit]=25&page[number]=1&page[offset]=0&page[size]=25&sort=-id HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:27:08] "GET /01JKB807WMNRKECY2F1ZRGE935/Order/1?include=ItemList,customer,ItemList,customer&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:27:08] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer?filter[id]=1&include=&page[limit]=10&page[number]=1&page[offset]=0&page[size]=10&sort=name HTTP/1.0" 200 -
+
+Logic Phase:		ROW LOGIC		(session=0xffff869d0ec0) (sqlalchemy before_flush)			
+..Order[1] {Update - client} id: 1, customer_id: 1, date_shipped:  [None-->] 2025-02-06 00:00:00, amount_total: 150, notes: Order 1 notes  row: 0xffff873a7d10  session: 0xffff869d0ec0  ins_upd_dlt: upd, initial: upd
+....Customer[1] {Update - Adjusting customer: balance} id: 1, name: Customer 1, balance:  [150.0000000000-->] 0E-10, credit_limit: 1000.0000000000  row: 0xffff872be630  session: 0xffff869d0ec0  ins_upd_dlt: upd, initial: upd
+Logic Phase:		COMMIT LOGIC		(session=0xffff869d0ec0)   										
+Logic Phase:		AFTER_FLUSH LOGIC	(session=0xffff869d0ec0)   										
+..Order[1] {AfterFlush Event} id: 1, customer_id: 1, date_shipped:  [None-->] 2025-02-06 00:00:00, amount_total: 150, notes: Order 1 notes  row: 0xffff873a7d10  session: 0xffff869d0ec0  ins_upd_dlt: upd, initial: upd
+..Order[1] {Sending Order to Kafka topic 'order_shipping' [Note: **Kafka not enabled** ]} id: 1, customer_id: 1, date_shipped:  [None-->] 2025-02-06 00:00:00, amount_total: 150, notes: Order 1 notes  row: 0xffff873a7d10  session: 0xffff869d0ec0  ins_upd_dlt: upd, initial: upd
+
+
+Sending Order to Kafka topic 'order_shipping' [Note: **Kafka not enabled** ]
+{
+  "Order": {
+    "amount_total": 150.0,
+    "customer_id": 1,
+    "date_shipped": "2025-02-06 00:00:00",
+    "notes": "Order 1 notes"
+  }
+}
+
+
+These Rules Fired (see Logic Phases, above, for actual order):		##
+  Customer		##
+    1. Derive <class 'database.models.Customer'>.balance as Sum(Order.amount_total Where Rule.sum(derive=Customer.balance, as_sum_of=Order.amount_total, where=lambda row: row.date_shipped is None) - <function init_rule.<locals>.<lambda> at 0xffff87e39120>)		##
+  Order		##
+    2. RowEvent Order.send_row_to_kafka() 		##
+
+Logic Phase:		COMPLETE(session=0xffff869d0ec0))       	
+127.0.0.1 - - [05/Feb/2025 14:27:13] "PATCH /01JKB807WMNRKECY2F1ZRGE935/Order/1 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:27:13] "GET /01JKB807WMNRKECY2F1ZRGE935/Item?filter[order_id]=1&page[limit]=25&page[offset]=0&sort=-id&include=order,product,order,product HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:27:13] "GET /01JKB807WMNRKECY2F1ZRGE935/Order/1?include=ItemList,customer,ItemList,customer&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:27:13] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer/1?include=OrderList,OrderList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:27:13] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer/1?include=OrderList,OrderList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:27:13] "GET /01JKB807WMNRKECY2F1ZRGE935/Order/1?include=ItemList,customer,ItemList,customer&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:27:13] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer/1?include=OrderList,OrderList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:27:13] "GET /01JKB807WMNRKECY2F1ZRGE935/Product/1?include=ItemList,ItemList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:27:42] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer?include=&page[limit]=25&page[number]=1&page[offset]=0&page[size]=25&sort=-id HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:27:42] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer?filter[id]=1&include=&page[limit]=10&page[number]=1&page[offset]=0&page[size]=10&sort=name HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:32:27] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer?include=&page[limit]=25&page[number]=1&page[offset]=0&page[size]=25&sort=name HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:32:37] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer/2?include=OrderList,OrderList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:32:37] "GET /01JKB807WMNRKECY2F1ZRGE935/Order?filter[customer_id]=2&page[limit]=25&page[offset]=0&sort=-id&include=ItemList,customer,ItemList,customer HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:32:37] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer/2?include=OrderList,OrderList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:32:50] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer?include=&page[limit]=25&page[number]=1&page[offset]=0&page[size]=25&sort=-id HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:32:50] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer?filter[id]=2&include=&page[limit]=10&page[number]=1&page[offset]=0&page[size]=10&sort=name HTTP/1.0" 200 -
+
+Logic Phase:		ROW LOGIC		(session=0xffff869d3350) (sqlalchemy before_flush)			
+..Order[3] {Update - client} id: 3, customer_id: 2, date_shipped: None, amount_total: 50, notes:  [Order 3 notes-->] .Order 3 notes  row: 0xffff873a7f50  session: 0xffff869d3350  ins_upd_dlt: upd, initial: upd
+Logic Phase:		COMMIT LOGIC		(session=0xffff869d3350)   										
+Logic Phase:		AFTER_FLUSH LOGIC	(session=0xffff869d3350)   										
+..Order[3] {AfterFlush Event} id: 3, customer_id: 2, date_shipped: None, amount_total: 50, notes:  [Order 3 notes-->] .Order 3 notes  row: 0xffff873a7f50  session: 0xffff869d3350  ins_upd_dlt: upd, initial: upd
+
+These Rules Fired (see Logic Phases, above, for actual order):		##
+  Customer		##
+    1. Derive <class 'database.models.Customer'>.balance as Sum(Order.amount_total Where Rule.sum(derive=Customer.balance, as_sum_of=Order.amount_total, where=lambda row: row.date_shipped is None) - <function init_rule.<locals>.<lambda> at 0xffff87e39120>)		##
+  Order		##
+    2. RowEvent Order.send_row_to_kafka() 		##
+
+Logic Phase:		COMPLETE(session=0xffff869d3350))       	
+127.0.0.1 - - [05/Feb/2025 14:33:03] "PATCH /01JKB807WMNRKECY2F1ZRGE935/Order/3 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:03] "GET /01JKB807WMNRKECY2F1ZRGE935/Order/3?include=ItemList,customer,ItemList,customer&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:03] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer/2?include=OrderList,OrderList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:03] "GET /01JKB807WMNRKECY2F1ZRGE935/Item?filter[order_id]=3&page[limit]=25&page[offset]=0&sort=-id&include=order,product,order,product HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:03] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer/2?include=OrderList,OrderList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:03] "GET /01JKB807WMNRKECY2F1ZRGE935/Order/3?include=ItemList,customer,ItemList,customer&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:03] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer/2?include=OrderList,OrderList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:03] "GET /01JKB807WMNRKECY2F1ZRGE935/Product/3?include=ItemList,ItemList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:05] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer?include=&page[limit]=25&page[number]=1&page[offset]=0&page[size]=25&sort=name HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:05] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer?include=&page[limit]=25&page[number]=1&page[offset]=0&page[size]=25&sort=-id HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:08] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer/2?include=OrderList,OrderList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:08] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer/2?include=OrderList,OrderList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:08] "GET /01JKB807WMNRKECY2F1ZRGE935/Order?filter[customer_id]=2&page[limit]=25&page[offset]=0&sort=-id&include=ItemList,customer,ItemList,customer HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:13] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer?include=&page[limit]=25&page[number]=1&page[offset]=0&page[size]=25&sort=-id HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:14] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer?filter[id]=2&include=&page[limit]=10&page[number]=1&page[offset]=0&page[size]=10&sort=name HTTP/1.0" 200 -
+
+Logic Phase:		ROW LOGIC		(session=0xffff872bf5c0) (sqlalchemy before_flush)			
+..Order[3] {Update - client} id: 3, customer_id: 2, date_shipped:  [None-->] 2025-02-06 00:00:00, amount_total: 50, notes: .Order 3 notes  row: 0xffff872bfc50  session: 0xffff872bf5c0  ins_upd_dlt: upd, initial: upd
+....Customer[2] {Update - Adjusting customer: balance} id: 2, name: Customer 2, balance:  [275.0000000000-->] 225.0000000000, credit_limit: 750.0000000000  row: 0xffff869edc70  session: 0xffff872bf5c0  ins_upd_dlt: upd, initial: upd
+Logic Phase:		COMMIT LOGIC		(session=0xffff872bf5c0)   										
+Logic Phase:		AFTER_FLUSH LOGIC	(session=0xffff872bf5c0)   										
+..Order[3] {AfterFlush Event} id: 3, customer_id: 2, date_shipped:  [None-->] 2025-02-06 00:00:00, amount_total: 50, notes: .Order 3 notes  row: 0xffff872bfc50  session: 0xffff872bf5c0  ins_upd_dlt: upd, initial: upd
+..Order[3] {Sending Order to Kafka topic 'order_shipping' [Note: **Kafka not enabled** ]} id: 3, customer_id: 2, date_shipped:  [None-->] 2025-02-06 00:00:00, amount_total: 50, notes: .Order 3 notes  row: 0xffff872bfc50  session: 0xffff872bf5c0  ins_upd_dlt: upd, initial: upd
+
+
+Sending Order to Kafka topic 'order_shipping' [Note: **Kafka not enabled** ]
+{
+  "Order": {
+    "amount_total": 50.0,
+    "customer_id": 2,
+    "date_shipped": "2025-02-06 00:00:00",
+    "notes": ".Order 3 notes"
+  }
+}
+
+
+These Rules Fired (see Logic Phases, above, for actual order):		##
+  Customer		##
+    1. Derive <class 'database.models.Customer'>.balance as Sum(Order.amount_total Where Rule.sum(derive=Customer.balance, as_sum_of=Order.amount_total, where=lambda row: row.date_shipped is None) - <function init_rule.<locals>.<lambda> at 0xffff87e39120>)		##
+  Order		##
+    2. RowEvent Order.send_row_to_kafka() 		##
+
+Logic Phase:		COMPLETE(session=0xffff872bf5c0))       	
+127.0.0.1 - - [05/Feb/2025 14:33:26] "PATCH /01JKB807WMNRKECY2F1ZRGE935/Order/3 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:27] "GET /01JKB807WMNRKECY2F1ZRGE935/Item?filter[order_id]=3&page[limit]=25&page[offset]=0&sort=-id&include=order,product,order,product HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:27] "GET /01JKB807WMNRKECY2F1ZRGE935/Order/3?include=ItemList,customer,ItemList,customer&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:27] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer/2?include=OrderList,OrderList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:27] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer/2?include=OrderList,OrderList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:27] "GET /01JKB807WMNRKECY2F1ZRGE935/Order/3?include=ItemList,customer,ItemList,customer&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:27] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer/2?include=OrderList,OrderList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:27] "GET /01JKB807WMNRKECY2F1ZRGE935/Product/3?include=ItemList,ItemList&page[limit]=2 HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:32] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer?include=&page[limit]=25&page[number]=1&page[offset]=0&page[size]=25&sort=-id HTTP/1.0" 200 -
+127.0.0.1 - - [05/Feb/2025 14:33:32] "GET /01JKB807WMNRKECY2F1ZRGE935/Customer?filter[id]=2&include=&page[limit]=10&page[number]=1&page[offset]=0&page[size]=10&sort=name HTTP/1.0" 200 -

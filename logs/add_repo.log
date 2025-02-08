@@ -1,0 +1,25 @@
++ export HOME=/opt/webgenai
++ HOME=/opt/webgenai
++ clean_project
++ [[ -e /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/ui/app/ ]]
++ rm -rf /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/ui/app /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/ui/images /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/devops/keycloak
++ rm -rf /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/ui/app /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/ui/images /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/devops/keycloak
++ rm -fr instance
++ rm -fr app_model_editor
++ rm -fr api_logic_server_cli
++ find . -name '*.pyc' -delete
++ find . -name __pycache__ -delete
+find: cannot delete './database/__pycache__': Directory not empty
+find: cannot delete './database/system/__pycache__': Directory not empty
+find: cannot delete './config/__pycache__': Directory not empty
+find: cannot delete './security/__pycache__': Directory not empty
+find: cannot delete './security/system/__pycache__': Directory not empty
+find: cannot delete './logic/__pycache__': Directory not empty
+find: cannot delete './system/genai/examples/genai_demo/wg_dev_merge/dev_demo_no_logic_fixed/docs/import_good/__pycache__': No such file or directory
++ which gh
+/usr/bin/gh
++ [[ -z /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935 ]]
++ [[ -z '' ]]
++ echo 'Missing required variables'
+Missing required variables
++ return

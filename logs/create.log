@@ -1,0 +1,113 @@
+Creating project with arguments genai_demo 01JKB807WMNRKECY2F1ZRGE935 12 6002 False
+Prompt file: /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/prompt.txt
+Working directory: /tmp/tmp.MSPRc3WidA-01JKB807WMNRKECY2F1ZRGE935
+Running: 'als genai --using="/opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/prompt.txt" --opt-locking=ignored --tables "12"'
+create_project: 
+create_project: GenAI [_genai_default] creating microservice...
+log: Generating Database, Logic, API & Frontend..
+create_project: .. .. --using prompt: /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/prompt.txt
+create_project: .. .. in pwd: /tmp/tmp.MSPRc3WidA-01JKB807WMNRKECY2F1ZRGE935
+create_project: .. from file: /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/prompt.txt
+create_project: .. inserted: Use LogicBank to enforce business logic.
+create_project: .. inserted explicit test data: Create 4 rows of test data for each table, and follow these guidelines carefully:
+create_project: .. saved request: system/genai/temp/request.json
+create_project: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+create_project: ChatGPT (66 secs) - response at: system/genai/temp/chatgpt_original.response
+create_project: .. call_chatgpt saved response: system/genai/temp/response.json
+create_project: .. used standard genai_demo response: system/genai/examples/genai_demo/genai_demo.response_example
+create_project: .. project name: OrderManagementSystem (from response: OrderManagementSystem)
+create_project: add description to Customer: Represents a customer in the system with unique name, balance, and credit limit attributes.
+create_project: Added description to model: Customer: class Customer(Base):
+create_project: """description: Represents a customer in the system with unique name, balance, and credit limit attributes."""
+create_project: __tablename__ = 'customer'
+create_project: id = Column(Integer, primary_key=True, autoincrement=True)
+create_project: name = Column(String, unique=True)
+create_project: balance = Column(DECIMAL)
+create_project: credit_limit = Column(DECIMAL)
+create_project: 
+create_project: add description to Order: Represents an order made by a customer, including a notes field.
+create_project: Added description to model: Order: class Order(Base):
+create_project: """description: Represents an order made by a customer, including a notes field."""
+create_project: __tablename__ = 'order'
+create_project: id = Column(Integer, primary_key=True, autoincrement=True)
+create_project: customer_id = Column(Integer, ForeignKey('customer.id'))
+create_project: date_shipped = Column(Date)
+create_project: amount_total = Column(DECIMAL)
+create_project: notes = Column(String)
+create_project: 
+create_project: add description to Item: Represents an item in an order, including quantity and pricing details.
+create_project: Added description to model: Item: class Item(Base):
+create_project: """description: Represents an item in an order, including quantity and pricing details."""
+create_project: __tablename__ = 'item'
+create_project: id = Column(Integer, primary_key=True, autoincrement=True)
+create_project: order_id = Column(Integer, ForeignKey('order.id'))
+create_project: product_id = Column(Integer, ForeignKey('product.id'))
+create_project: quantity = Column(Integer, nullable=False)
+create_project: unit_price = Column(DECIMAL)
+create_project: amount = Column(DECIMAL)
+create_project: 
+create_project: add description to Product: Represents a product available in the system with a unit price.
+create_project: Added description to model: Product: class Product(Base):
+create_project: """description: Represents a product available in the system with a unit price."""
+create_project: __tablename__ = 'product'
+create_project: id = Column(Integer, primary_key=True, autoincrement=True)
+create_project: name = Column(String)
+create_project: unit_price = Column(DECIMAL)
+create_project: 
+create_project: .... test_data_rows: 16
+create_project: .. code for db creation and test data: system/genai/temp/create_db_models.py
+create_project: .. saving work files to: system/genai/temp/OrderManagementSystem
+create_project: save_prompt_messages_to_system_genai_temp_project() - /tmp/tmp.MSPRc3WidA-01JKB807WMNRKECY2F1ZRGE935/system/genai/temp/OrderManagementSystem
+create_project: .. saving[000_you_are.prompt]  - You are a data modelling exper...
+create_project: .. saving[001_logic_training.prompt]  - Here is the simplified API for...
+create_project: .. saving[002_create_db_models.prompt]  - Use SQLAlchemy to create a sql...
+create_project: .. saving response [003_create_db_models.response]  - Use SQLAlchemy to create a sql...
+create_project: ..cwd: /tmp/tmp.MSPRc3WidA-01JKB807WMNRKECY2F1ZRGE935
+create_project: 
+create_project: ..docker using default directory: /tmp/tmp.MSPRc3WidA-01JKB807WMNRKECY2F1ZRGE935/OrderManagementSystem
+create_project: 
+create_project: .. fixed hallucination/indent:     Rule.constraint(validate=Customer,
+create_project: .. found class: Customer in: Rule.constraint(validate=Customer,
+create_project: .. fixed hallucination/indent:     Rule.sum(derive=Customer.balance, as_sum_of=Order.amount_total, where=lambda row: row.date_shipped is None)
+create_project: .. found class: Customer in: Rule.sum(derive=Customer.balance, as_sum_of=Order.amount_total, where=lambda row: row.date_shipped is None)
+create_project: .. found class: Order in: Rule.sum(derive=Customer.balance, as_sum_of=Order.amount_total, where=lambda row: row.date_shipped is None)
+create_project: .. fixed hallucination/indent:     Rule.sum(derive=Order.amount_total, as_sum_of=Item.amount)
+create_project: .. found class: Order in: Rule.sum(derive=Order.amount_total, as_sum_of=Item.amount)
+create_project: .. found class: Item in: Rule.sum(derive=Order.amount_total, as_sum_of=Item.amount)
+create_project: .. fixed hallucination/indent:     Rule.formula(derive=Item.amount, as_expression=lambda row: row.quantity * row.unit_price)
+create_project: .. found class: Item in: Rule.formula(derive=Item.amount, as_expression=lambda row: row.quantity * row.unit_price)
+create_project: .. fixed hallucination/indent:     Rule.copy(derive=Item.unit_price, from_parent=Product.unit_price)
+create_project: .. found class: Item in: Rule.copy(derive=Item.unit_price, from_parent=Product.unit_price)
+create_project: .. found class: Product in: Rule.copy(derive=Item.unit_price, from_parent=Product.unit_price)
+create_project: .. fixed hallucination/indent:     Rule.after_flush_row_event(on_class=Order, calling=kafka_producer.send_row_to_kafka, if_condition=lambda row: row.date_shipped is not None, with_args={"topic": "order_shipping"})
+create_project: 
+create_project: Project created.  Next steps:
+create_project: 
+create_project: $ ApiLogicServer run      # Run created API and Admin App, or
+create_project: 
+create_project: Customize using IDE on local machine:
+create_project: exit     # exit the Docker container
+create_project: code <local machine directory for: OrderManagementSystem>  # e.g., open VSCode on created project
+create_project: 
+create_project: 
+create_project: GENAI (67 secs) successful on try 1
+log: Model Generation Successful
+create_project: 
+create_project: 
+create_project: Welcome to API Logic Server, 14.03.07
+create_project: 
+create_project: creating in manager: sqlite:///system/genai/temp/create_db_models.sqlite
+create_project: 
+Waiting for background tasks to complete.. (in /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935)
++ manager -jp 01JKB807WMNRKECY2F1ZRGE935
+[1]   Running                 create_spa &
+[2]-  Running                 gen_descriptions &
+[3]+  Running                 cleanup &
++ PYTHONPATH=/opt/webgenai
++ python /opt/webgenai/database/manager.py -jp 01JKB807WMNRKECY2F1ZRGE935
+Background tasks completed
+log: Project created, starting..
+log: Creating sample data..
++ [[ ! -f /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/docs/db.dbml ]]
++ dbml-renderer -i /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/docs/db.dbml -o /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/ui/dber.svg
++ set +x

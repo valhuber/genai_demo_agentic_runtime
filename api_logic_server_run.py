@@ -13,15 +13,15 @@
 #
 #    You typically do not customize this file.
 #
-#    (v 12.00.04, October 23, 2024 10:43:16)
+#    (v 14.03.07, February 05, 2025 14:26:18)
 #
 #    See Main Code (at end).
 #        Use log messages to understand API and Logic activation.
 #
 ###############################################################################
 
-api_logic_server__version = '12.00.04'
-api_logic_server_created__on = 'October 23, 2024 10:43:16'
+api_logic_server__version = '14.03.07'
+api_logic_server_created__on = 'February 05, 2025 14:26:18'
 api_logic_server__host = 'localhost'
 api_logic_server__port = '5656'
 
@@ -66,10 +66,7 @@ from flask import Flask, redirect, send_from_directory, send_file
 from flask_cors import CORS
 import ui.admin.admin_loader as AdminLoader
 from security.system.authentication import configure_auth
-import database.multi_db as multi_db
 import oracledb
-import integration.kafka.kafka_producer as kafka_producer
-import integration.kafka.kafka_consumer as kafka_consumer
 
 
 app_logger = server_setup.logging_setup()
@@ -136,7 +133,7 @@ if __name__ == "__main__":
 
     flask_app.run(host=args.flask_host, threaded=True, port=args.port)
 else:
-    msg = f'API Logic Project Loaded (WSGI), version 12.00.04\n'
+    msg = f'API Logic Project Loaded (WSGI), version 14.03.07\n'
     msg += f'.. startup message: {start_up_message}\n'
 
     if server_setup.is_docker():

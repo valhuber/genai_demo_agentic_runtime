@@ -4,18 +4,18 @@
 
 Project DBML {
   Note: '''
-Customer: customers, storing their balance and credit limit.
-Item: items in an order, with quantity and price details.
-Order: customer orders, including a note and shipping date.
-Product: available products with their unit price.
+Customer: Represents a customer in the system with unique name, balance, and credit limit attributes.
+Item: Represents an item in an order, including quantity and pricing details.
+Order: Represents an order made by a customer, including a notes field.
+Product: Represents a product available in the system with a unit price.
 '''
 }
 
 Table Customer {
     id INTEGER [primary key]
     name VARCHAR 
-    balance FLOAT 
-    credit_limit FLOAT 
+    balance DECIMAL 
+    credit_limit DECIMAL 
     }
 
 Table Item {
@@ -23,23 +23,22 @@ Table Item {
     order_id INTEGER 
     product_id INTEGER 
     quantity INTEGER 
-    amount FLOAT 
-    unit_price FLOAT 
+    unit_price DECIMAL 
+    amount DECIMAL 
     }
 
 Table Order {
     id INTEGER [primary key]
     customer_id INTEGER 
-    date_ordered DATETIME 
-    date_shipped DATETIME 
+    date_shipped DATE 
+    amount_total DECIMAL 
     notes VARCHAR 
-    amount_total FLOAT 
     }
 
 Table Product {
     id INTEGER [primary key]
     name VARCHAR 
-    unit_price FLOAT 
+    unit_price DECIMAL 
     }
 
 

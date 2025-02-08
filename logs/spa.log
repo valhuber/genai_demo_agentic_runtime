@@ -1,0 +1,11 @@
+Creating SPA for project 01JKB807WMNRKECY2F1ZRGE935
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/images/generations "HTTP/1.1 200 OK"
+INFO:/opt/webgenai/tools/openai_spa.py:Waiting for /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/static
+INFO:/opt/webgenai/tools/openai_spa.py:Adding page OrderStream to the database
+INFO:/opt/webgenai/tools/openai_spa.py:Ignoring Image: {'Type': 'Hero', 'name': 'Hero Image of OrderStream Dashboard.png', 'description': "The dashboard interface showcasing the system's seamless integration for managing customers, orders, items, and products."}
+INFO:/opt/webgenai/tools/openai_spa.py:Ignoring Image: {'Type': 'Background', 'name': 'Background Image for About Section', 'description': 'Illuminated light bulb over a workspace symbolizing innovation and creativity.'}
+INFO:/opt/webgenai/tools/openai_spa.py:Ignoring Image: {'Type': 'Infographic', 'name': 'Services Infographic', 'description': 'Infographic depicting our main services: customer management, order processing, inventory management, product listings, and order notes.'}
+INFO:/opt/webgenai/tools/openai_spa.py:Ignoring Image: {'Type': 'Map', 'name': 'Location Map', 'description': 'Map showing the location of OrderStream headquarters.'}
+INFO:/opt/webgenai/tools/openai_spa.py:Ignoring Image: {'Type': 'Testimonial', 'name': 'Testimonial from Jane Doe', 'description': 'Portrait of Jane Doe, CEO of Doe Industries, providing a testimonial.'}
+INFO:/opt/webgenai/tools/openai_spa.py:Ignoring Image: {'Type': 'Testimonial', 'name': 'Testimonial from John Smith', 'description': 'Portrait of John Smith, Operations Manager at Smith Retail Co., providing a testimonial.'}

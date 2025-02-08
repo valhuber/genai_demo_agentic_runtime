@@ -1,0 +1,281 @@
+"models":
+- "classname": |-
+    Customer
+  "code": |-
+    class Customer(Base):
+        __tablename__ = 'customer'
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        name = Column(String)
+        credit_limit = Column(Decimal)
+        balance = Column(Decimal)  # Derived attribute for balance based on LogicBank rule
+        orders = Column(relationship("Order", back_populates="customer"))
+  "description": |-
+    Represents a customer with a balance, orders, and a credit limit.
+  "name": |-
+    Customer
+- "classname": |-
+    Order
+  "code": |-
+    class Order(Base):
+        __tablename__ = 'order'
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        customer_id = Column(Integer, ForeignKey('customer.id'))
+        date_shipped = Column(DateTime)
+        amount_total = Column(Decimal)  # Derived attribute for total amount based on LogicBank rule
+        notes = Column(String)
+        customer = relationship("Customer", back_populates="orders")
+        items = relationship("Item", back_populates="order")
+  "description": |-
+    Represents an order linked to a customer, containing order items and notes.
+  "name": |-
+    Order
+- "classname": |-
+    Item
+  "code": |-
+    class Item(Base):
+        __tablename__ = 'item'
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        order_id = Column(Integer, ForeignKey('order.id'))
+        product_id = Column(Integer, ForeignKey('product.id'))
+        quantity = Column(Integer)
+        unit_price = Column(Decimal)  # Copied from Product.unit_price by LogicBank rule
+        amount = Column(Decimal)  # Derived attribute for amount based on LogicBank rule
+        order = relationship("Order", back_populates="items")
+        product = relationship("Product", back_populates="items")
+  "description": |-
+    Represents an item within an order, includes quantity, unit price, and total amount.
+  "name": |-
+    Item
+- "classname": |-
+    Product
+  "code": |-
+    class Product(Base):
+        __tablename__ = 'product'
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        name = Column(String)
+        unit_price = Column(Decimal)
+        items = relationship("Item", back_populates="product")
+  "description": |-
+    Represents a product available for sale, contains a unit price.
+  "name": |-
+    Product
+- "classname": |-
+    Employee
+  "code": |-
+    class Employee(Base):
+        __tablename__ = 'employee'
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        name = Column(String)
+        years_of_service = Column(Integer)
+        skill_rating_total = Column(Decimal)  # Sum of employee skills ratings
+        skill_summary = Column(Decimal)  # Formula involving skills ratings and years of service
+        skills = relationship("EmployeeSkill", back_populates="employee")
+  "description": |-
+    Represents an employee with skills and service years, derived attributes for skill ratings.
+  "name": |-
+    Employee
+- "classname": |-
+    EmployeeSkill
+  "code": |-
+    class EmployeeSkill(Base):
+        __tablename__ = 'employeeskill'
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        employee_id = Column(Integer, ForeignKey('employee.id'))
+        rating = Column(Decimal)
+        employee = relationship("Employee", back_populates="skills")
+  "description": |-
+    Links employees with their skill ratings.
+  "name": |-
+    EmployeeSkill
+- "classname": |-
+    Activity
+  "code": |-
+    class Activity(Base):
+        __tablename__ = 'activity'
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        name = Column(String)
+        is_service = Column(Boolean)
+        students = relationship("StudentActivity", back_populates="activity")
+  "description": |-
+    Represents an activity with potential service designation, linked to students.
+  "name": |-
+    Activity
+- "classname": |-
+    Student
+  "code": |-
+    class Student(Base):
+        __tablename__ = 'student'
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        name = Column(String)
+        is_honor_student = Column(Boolean)
+        service_activity_count = Column(Integer)  # Count of service activities
+        activities = relationship("StudentActivity", back_populates="student")
+  "description": |-
+    Represents a student with relations to activities and derived counts for service activities.
+  "name": |-
+    Student
+- "classname": |-
+    StudentActivity
+  "code": |-
+    class StudentActivity(Base):
+        __tablename__ = 'studentactivity'
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        student_id = Column(Integer, ForeignKey('student.id'))
+        activity_id = Column(Integer, ForeignKey('activity.id'))
+        student = relationship("Student", back_populates="activities")
+        activity = relationship("Activity", back_populates="students")
+  "description": |-
+    Links students with activities they participate in, including service ones.
+  "name": |-
+    StudentActivity
+- "classname": |-
+    Felony
+  "code": |-
+    class Felony(Base):
+        __tablename__ = 'felony'
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        description = Column(String)
+        class_level = Column(Integer)
+        employees = relationship("EmployeeFelony", back_populates="felony")
+  "description": |-
+    Represents felony records with various class levels linked to employees.
+  "name": |-
+    Felony
+- "classname": |-
+    EmployeeFelony
+  "code": |-
+    class EmployeeFelony(Base):
+        __tablename__ = 'employeefelony'
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        employee_id = Column(Integer, ForeignKey('employee.id'))
+        felony_id = Column(Integer, ForeignKey('felony.id'))
+        employee = relationship("Employee", back_populates="felonies")
+        felony = relationship("Felony", back_populates="employees")
+  "description": |-
+    Associates employees with known felonies.
+  "name": |-
+    EmployeeFelony
+- "classname": |-
+    Warehouse
+  "code": |-
+    class Warehouse(Base):
+        __tablename__ = 'warehouse'
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        location = Column(String)
+        capacity = Column(Decimal)
+        products = relationship("WarehouseProduct", back_populates="warehouse")
+  "description": |-
+    Warehouse location and its product storage capacity.
+  "name": |-
+    Warehouse
+- "classname": |-
+    WarehouseProduct
+  "code": |-
+    class WarehouseProduct(Base):
+        __tablename__ = 'warehouseproduct'
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        warehouse_id = Column(Integer, ForeignKey('warehouse.id'))
+        product_id = Column(Integer, ForeignKey('product.id'))
+        warehouse = relationship("Warehouse", back_populates="products")
+        product = relationship("Product", back_populates="warehouses")
+  "description": |-
+    Relationship between warehouses and products they store.
+  "name": |-
+    WarehouseProduct
+"name": |-
+  Order Management System
+"rules":
+- "code": |-
+    Rule.sum(derive=Customer.balance, as_sum_of=Order.amount_total, where=lambda row: row.date_shipped is None)
+  "description": |-
+    The Customer's balance is maintained as the sum of undelivered Order amount_totals.
+  "entity": |-
+    Customer
+  "name": |-
+    CustomerBalanceSumRule
+  "use_case": |-
+    Check Credit
+- "code": |-
+    Rule.sum(derive=Order.amount_total, as_sum_of=Item.amount)
+  "description": |-
+    An Order's amount_total is calculated as the sum of the attached Item amounts.
+  "entity": |-
+    Order
+  "name": |-
+    OrderAmountTotalSumRule
+  "use_case": |-
+    Check Credit
+- "code": |-
+    Rule.formula(derive=Item.amount, as_expression=lambda row: row.quantity * row.unit_price)
+  "description": |-
+    The Item amount is calculated by multiplying quantity with unit_price.
+  "entity": |-
+    Item
+  "name": |-
+    ItemAmountFormulaRule
+  "use_case": |-
+    Check Credit
+- "code": |-
+    Rule.copy(derive=Item.unit_price, from_parent=Product.unit_price)
+  "description": |-
+    The Item's unit_price is copied from the associated Product unit_price.
+  "entity": |-
+    Item
+  "name": |-
+    ItemUnitPriceCopyRule
+  "use_case": |-
+    Check Credit
+- "code": |-
+    Rule.constraint(validate=Customer, as_condition=lambda row: row.balance <= row.credit_limit, error_msg='Customer balance ({row.balance}) exceeds credit limit ({row.credit_limit})')
+  "description": |-
+    Ensures the Customer's balance is less than the credit limit.
+  "entity": |-
+    Customer
+  "name": |-
+    CustomerCreditLimitConstraintRule
+  "use_case": |-
+    Check Credit
+"test_data": |-
+  # Creating test data manually without relying on any function
+  from datetime import date
+
+  customer1 = Customer(id=1, name="John Doe", credit_limit=Decimal("5000.00"), balance=Decimal("1000.00"))
+  customer2 = Customer(id=2, name="Jane Smith", credit_limit=Decimal("10000.00"), balance=Decimal("2500.00"))
+  customer3 = Customer(id=3, name="Jack Johnson", credit_limit=Decimal("7500.00"), balance=Decimal("3000.00"))
+  customer4 = Customer(id=4, name="Jill White", credit_limit=Decimal("4500.00"), balance=Decimal("2000.00"))
+
+  order1 = Order(id=1, customer_id=1, date_shipped=None, amount_total=Decimal("250.00"), notes="First order")
+  order2 = Order(id=2, customer_id=2, date_shipped=date(2023, 5, 10), amount_total=Decimal("500.00"), notes="Second order")
+  order3 = Order(id=3, customer_id=3, date_shipped=None, amount_total=Decimal("750.00"), notes="Third order")
+  order4 = Order(id=4, customer_id=4, date_shipped=date(2023, 6, 15), amount_total=Decimal("1000.00"), notes="Fourth order")
+
+  product1 = Product(id=1, name="Product A", unit_price=Decimal("25.00"))
+  product2 = Product(id=2, name="Product B", unit_price=Decimal("50.00"))
+  product3 = Product(id=3, name="Product C", unit_price=Decimal("75.00"))
+  product4 = Product(id=4, name="Product D", unit_price=Decimal("100.00"))
+
+  item1 = Item(id=1, order_id=1, product_id=1, quantity=2, unit_price=Decimal("25.00"), amount=Decimal("50.00"))
+  item2 = Item(id=2, order_id=2, product_id=2, quantity=3, unit_price=Decimal("50.00"), amount=Decimal("150.00"))
+  item3 = Item(id=3, order_id=3, product_id=3, quantity=4, unit_price=Decimal("75.00"), amount=Decimal("300.00"))
+  item4 = Item(id=4, order_id=4, product_id=4, quantity=1, unit_price=Decimal("100.00"), amount=Decimal("100.00"))
+"test_data_rows": []
+"test_data_sqlite": |-
+  INSERT INTO customer (id, name, credit_limit, balance) VALUES (1, 'John Doe', 5000.00, 1000.00);
+  INSERT INTO customer (id, name, credit_limit, balance) VALUES (2, 'Jane Smith', 10000.00, 2500.00);
+  INSERT INTO customer (id, name, credit_limit, balance) VALUES (3, 'Jack Johnson', 7500.00, 3000.00);
+  INSERT INTO customer (id, name, credit_limit, balance) VALUES (4, 'Jill White', 4500.00, 2000.00);
+
+  INSERT INTO order (id, customer_id, date_shipped, amount_total, notes) VALUES (1, 1, NULL, 250.00, 'First order');
+  INSERT INTO order (id, customer_id, date_shipped, amount_total, notes) VALUES (2, 2, '2023-05-10', 500.00, 'Second order');
+  INSERT INTO order (id, customer_id, date_shipped, amount_total, notes) VALUES (3, 3, NULL, 750.00, 'Third order');
+  INSERT INTO order (id, customer_id, date_shipped, amount_total, notes) VALUES (4, 4, '2023-06-15', 1000.00, 'Fourth order');
+
+  INSERT INTO product (id, name, unit_price) VALUES (1, 'Product A', 25.00);
+  INSERT INTO product (id, name, unit_price) VALUES (2, 'Product B', 50.00);
+  INSERT INTO product (id, name, unit_price) VALUES (3, 'Product C', 75.00);
+  INSERT INTO product (id, name, unit_price) VALUES (4, 'Product D', 100.00);
+
+  INSERT INTO item (id, order_id, product_id, quantity, unit_price, amount) VALUES (1, 1, 1, 2, 25.00, 50.00);
+  INSERT INTO item (id, order_id, product_id, quantity, unit_price, amount) VALUES (2, 2, 2, 3, 50.00, 150.00);
+  INSERT INTO item (id, order_id, product_id, quantity, unit_price, amount) VALUES (3, 3, 3, 4, 75.00, 300.00);
+  INSERT INTO item (id, order_id, product_id, quantity, unit_price, amount) VALUES (4, 4, 4, 1, 100.00, 100.00);

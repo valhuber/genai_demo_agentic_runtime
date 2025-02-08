@@ -1,253 +1,304 @@
-# Quick Start
 
-**Microservice Automation Complete -- run to verify:** for **VSCode** projects except those downloaded from Web/GenAI:
-1. `Press F5 to Run` (your venv is defaulted)  
+&nbsp;
+**Key Takeways - TL;DR - GenAI leverages AI and Microservice Automation for project creation**
+&nbsp;
 
-&emsp;&emsp;&emsp;&emsp;For **other IDEs,** please follow the [Setup and Run](#1-setup-and-run) procedure, below.
+    To create projects (either the WebGenAI web app, or API Logic Server CLI), the system performs the following:
+    
+    1. Uses ChatGPT APIs to submit prompts and obtain data model class responses
+    
+    2. It then uses these to create a database and project
 
-> Tip: create the sample app for customization examples: `ApiLogicServer create --project-name=nw_sample --db_url=nw+`
+    This document presumes you have already created the project, and are using VSCode or GitHub to explore it.  It illustrates how to run and customize the genai_demo project.
+
+    > Note: if you have *not* already created the project, see the Appendix ("Creating GenAI Demo").
+    
 
 &nbsp;
 
-# Using this readme
+## Setup Codespaces
 
-This readme contains the following sections:
+Codespaces enables you to run in the cloud: VSCode via your Browser, courtesy GitHub.  You can use codespaces on your GenAI project:
+
+1. Open your project on GitHub
+
+![API Logic Server Intro](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/sample-ai/genai/open-github.png?raw=true)
+
+2. Open it in Codespaces (takes a minute or 2):
+
+![API Logic Server Intro](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/sample-ai/genai/start-codespaces.png?raw=true)
+
+> You will now see your project - running in VSCode, _in the Browser._  But that's just what you _see..._
+
+> Behind the scenes, Codespaces has requisitioned a cloud machine, and loaded your project - with a _complete development environment_ - Python, your dependencies, git, etc.  
+
+> You are attached to this machine in your Browser, running VSCode.
+
+> :trophy: Pretty remarkable.
+
+__3. Start the Server and open the App in the Browser__
+
+* Use the pre-defined Launch Configuration
+
+![API Logic Server Intro](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/git-codespaces/start-codespaces.png?raw=true)
 
 
-| Section                  | Info                               |
-|:-------------------------|:-----------------------------------|
-| [1. Setup and Run](#1-setup-and-run) | Information about API Logic Server, and setting up your venv     |
-| [2. Key Customization Files](#2-key-customization-files) | Quick idea of the key files you'll alter        |
-| [3. Procedures](#3-procedures) | Key Procedures        |
-| [4. Deployment](#4-deployment) | Deploy early previews to the cloud - enable team collaboration     |
-| [5. Project Requirements](#5-project-requirements)     | Options for capturing requirements |
-| [6. Project Information](#6-project-information)                | Creation dates, versions          |
-| [Appendix - Key Technologies](#appendix-key-technologies)    | Doc links of key libraries         |
+We think you'll find Codespaces pretty amazing - check it out!
 
 &nbsp;
 
-# 1. Setup and Run
+## How was the project created?
 
-To run your project, the system requires various runtime systems for data access, api, and logic.  These are included with API Logic Server ([architecture doc here](https://apilogicserver.github.io/Docs/Architecture-What-Is/)).  
+Your prompt (whether provided in a file to the CLI, or the WebGenAI website) 
+is sent to ChatGPT to create a schema.  This schema is then processed by als to create 
+and run a project that provides a JSON:API, a Web App, a database, and
+business logic that runs in the API.
 
-So, to run your project:
+For more information, Appendix ("how does it work").  For more information on the architecture,
+please see: https://www.genai-logic.com/architecture.
 
-*  __1.1 Establish your Python Environment__ 
-    * Docker or VSCode - [nothing to do](#docker-or-vscode---nothing-to-do)
-    * Otherwise, [Establish Your Python Environment](#establish-your-python-environment---other-environments) to activate these runtime systems
-* __[1.2 Run](#12-run)__
+Let's have a look at the created project.
 
 &nbsp;
 
-## 1.1 Establish Your Python Environment - Other Environments
+## 1. API/App Automation
 
-Your `requirements.txt` has already been created, so...
+API/App Automation means the created project is executable.  To run:
 
-```bash title="Install API Logic Server in a Virtual Environment"
-python -m venv venv                        # may require python3 -m venv venv
-venv\Scripts\activate                      # mac/linux: source venv/bin/activate
-python -m pip install -r requirements.txt  # accept "new Virtual environment"
+1. Press **F5** to run
+2. Start your Browser (use the codespaces button, or locally: http://localhost:5656/) to view:
+    * App Automation: the Admin App, and
+    * API Automation: JSON:API, with Swagger
+3. Stop the server when you are done (red box on VSCode Debugger panel)
+
+![Microservice Automation](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/sample-ai/copilot/created-microservice.png?raw=true)
+
+It's a modern, 3-tiered architecture, using standard Python libraries.  For more information, see slide 2: https://www.genai-logic.com/architecture.
+ 
+&nbsp;
+
+## 2. Customize: Rules and Python
+
+The development environment is also standard: your IDE, standard languages, standard libraries, standard source control, etc.  You customize API Logic Project in two ways, both performed in your IDE:
+
+* **Logic Automation:** declare spreadsheet-like rules to address multi-table derivations and constraints.  These constitute nearly half of a typical database-oriented system.   Declarative rules are 40X more concise than procedural code.
+
+* **Standard Python:** e.g, to create a new custom endpoint, and send a Kafka message
+
+> Note: projects are model-driven, resulting in a very small amount of code.  This simplifies debugging and customizing your system.
+
+Explore rules and Python customization below.
+
+&nbsp;
+
+### Logic Automation
+
+The project creation provided natural language logic.  This is translated into ***rules*** (vs. lots of code) expressed in Python.  To explore rules created from your prompt:
+
+1. Open `logic/declare_logic.py`
+
+2. View the Python-based rules created by GenAI.  Observe you
+
+> You can add more rules, with Python (code completion), and/or GenAI.
+
+![Add Rules](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/sample-ai/genai/genai-rules.png?raw=true)
+
+&nbsp;
+
+### Standard Python, Libraries
+
+To save time, issue the follow command to simulate changes you might make in your IDE, e.g., to create a new custom endpoint, and send a Kafka message.  
+
+```bash title="Simulate IDE Customization"
+als add-cust
 ```
 
-Notes:
+![Customize](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/sample-ai/copilot/genai_cust.png?raw=true)
 
-* See also the `venv_setup` directory in this API Logic Project.
+The customization is this code in the diagram above:
 
-* If using SqlServer, install `pyodbc`.  Not required for docker-based projects.  For local installs, see the [Quick Start](https://apilogicserver.github.io/Docs/Install-pyodbc/).
+```python title="Send Kafka Message"
 
-&nbsp;
+    # Sends the order to Kafka topic 'order_shipping' if the date shipped is not None.
+    Rule.after_flush_row_event(on_class=Order, calling=kafka_producer.send_row_to_kafka, if_condition=lambda row: row.date_shipped is not None, with_args={"topic": "order_shipping"})
+```
 
-#### Docker or VSCode - nothing to do
+### Try it out
 
-Nothing to do here:
+Set a breakpoint in the code above, and:
 
-* **VSCode:** projects automatically use installed API Logic Server `venv`, so this step is ***not required*** until you want to create a local `venv` for additional packages.
+1. Start the Server (**F5**)
+2. Use the Admin app to alter the first Customer, first Order, first Item, and change the quantity to 11111
+    * Observe the error message, from the rules.
+3. To test the new endpoint, use Swagger (**ServicesEndPoint > POST /ServicesEndPoint/OrderB2B)**.
+    * Observe the swagger response - "Sending Order to Shipping sends:".
 
-* **Docker:** Your runtime systems are part of Dev Container, which you probably activated when you [opened the project](https://apilogicserver.github.io/Docs/IDE-Execute/).  
-
-    * If you did not accept the "Open in Container" option when you started VSCode, use __View > Command Palette > Remote-Containers: Reopen in Container__.
-
-&nbsp;
-
-&nbsp;
-
-## 1.2 Run
-
-The `ApiLogicServer create` command creates Run Configurations for PyCharm and VSCode:
-
-* For PyCharm, press Ctl-D
-* For VSCode, &nbsp;press F5:
-
-![Start Project](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/2-apilogicproject-nutshell.png?raw=true)
-
-As shown above:
-
-1. Use the pre-supplied Run Configurations; use either...
-    * `ApiLogicServer` to run [with security](https://apilogicserver.github.io/Docs/Security-Swagger/)
-    * `ApiLogicServer - No Security` (simplifies use of Swagger)
-2. Click the url in the console to start the Admin App
-    * Use it to explore your **data** (shown below)
-    * And your **API** (via Swagger)
-
-![Admin App](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/ui-admin/run-admin-app.png?raw=true)
-
+Note: Kafka is not activated in this example.  To explore a running Tutorial for application integration with running Kafka, see: https://apilogicserver.github.io/Docs/Sample-Integration.
 
 &nbsp;
 
-# 2. Key Customization Files
+## 3. Deployment: Containers, Cloud
 
-Your project is ready to run, but it's likely you'll want to customize it - declare logic, new endpoints, etc.
+One of the best ways to de-risk projects is to verify the sponsors are in sync with what is happening.  This is best addressed with *working software*, which often occurs late in project development.  Surprises here can result in considerable rework... and frustrations.
 
->> Tip: in particular, use the sample app to explore the value of ___declarative logic and security.___  Unique to API Logic Server, this is critical to unlocking the full value of API Logic Server.
+GenAI Automation produces *working software, now*, so you can find misunderstandings before investing serious effort ("fail fast").  To expose the working software, it's often desirable to deploy to the cloud so business users can run it.
 
-The ___Key Customization Files___ listed in the table below are created as stubs, intended for you to add customizations that extend the created API, Logic and Web App.
-
-* Since they are separate files, the project can be
-[rebuilt](https://apilogicserver.github.io/Docs/Project-Rebuild/) (e.g., synchronized with a revised schema), preserving your customizations.
-
-> Tip: create the sample app for customization examples: `ApiLogicServer create --project-name=nw_sample --db_url=nw+`
-> <br>Or, open it in GitHub (use Shift + "." to view in project mode) - [click here](https://github.com/ApiLogicServer/demo)
-
-To make customizations easy to explore, **search for:**
-* `#als` will reveal key customization examples
-* `Your Code Goes Here` to find key files to customize, summarized below:
-
-<br>
-
-| Directory | Usage                         | Key Customization File             | Typical Customization                                                                 |
-|:-------------- |:------------------------------|:-----------------------------------|:--------------------------------------------------------------------------------------|
-| ```api``` | **JSON:API**<br>*Ready to Run*                    | ```api/customize_api.py```         | Add new end points / services                                                         |
-| ```ui``` | **Multi-Page Admin App**<br>*Ready to Run*  | ```ui/admin/admin.yaml```          | Control field display - order, captions etc.                                          |
-| ```database``` | SQLAlchemy Data Model Classes | ```database/customize_models.py``` | Add derived attributes, and relationships missing in the schema                       |
-| ```logic``` | **Transactional Logic**<br>spreadsheet-like rules   | ```logic/declare_logic.py```       | Declare multi-table derivations, constraints, and Python events such as send mail / messages |
-| ```security``` | Authentication, Authorization   | ```security/declare_security.py```          | Control login, role-based row access         |
-| ```integration``` | Consume Kafka Messages             | ```integration/kafka/kafka_consumer.py```          |  [Application Integration](https://apilogicserver.github.io/Docs/Sample-Integration/)                                          |
-| ```test``` | Behave Test Suite              | ```test/api_logic_server_behave/features```          | Declare and implement [Behave Tests](https://apilogicserver.github.io/Docs/Behave/)                                          |
-
-<br>
-
-Notes:
-
-1. API Logic Server **CLI** provides commands you can use to ugrade your project, e.g., to add security.  See the next section.
-2. You will observe the project is small.  That is because the app, logic and api are represented as **models:**
-    * The [web app](ui/admin/admin.yaml) is a YAML file (about 150 lines - no html or JavaScript)
-    * The [api](api/expose_api_models.py) is essentially 1 line per data model (table)
+API Logic Server creates the `devops` directory, which scripts to containerize your project, and deploy it to Azure.  For more information, see DevOps Automation: https://apilogicserver.github.io/Docs/DevOps-Automation/.
 
 &nbsp;
 
-# 3. Procedures
-
-Several **CLI commands** are provided to operate on your current project.  
-
-1. Use your IDE's terminal window to access these
-2. Use `ApiLogicServer --help` to discover these
-
-<br>
-
-| Procedures               | Notes                              |
-|:-------------------------|:-----------------------------------|
-| 1. **Database Migration** | See [alembic](database/alembic/readme.md) for database migration procedures.     |
-| 1. **Activating Security** | See [Security Activation](https://apilogicserver.github.io/Docs/Security-Activation/) for activating security.     |
+## Appendices
 
 &nbsp;
 
-# 4. Deployment
+### GenAI Restart Procedures
 
-The `devops` directory contains several scripts for creating container images, testing them, and deploying them.
+AI results are not consistent, so the created model file may need corrections.  You can find it at `system/genai/temp/model.py`.  You can correct the model file, and then run:
 
-Since API Logic Server creates working software (UI, API), you can do this after creating your project, to [collaborate with your team](https://apilogicserver.github.io/Docs/DevOps-Containers-Preview/).
+```bash
+als create --project-name=genai_demo --from-model=system/genai/temp/model.py --db-url=sqlite
+```
 
-&nbsp;
+Or, correct the chatgpt response, and
 
-# 5. Project Requirements
-
-Optionally, you can **document requirements** as part of an **executable test plan**.  Test plan execution creates documentation (in markdown), including **requirements traceability** into implementation.  [See example here](test/api_logic_server_behave/reports/Behave%20Logic%20Report%20Sample.md).
-
-&nbsp;
-
-# 6. Project Information
-
-This API Logic Project was created with the `ApiLogicServer create` command.
-For information on Managing API Logic Projects, [click here](https://apilogicserver.github.io/Docs/Project-Structure).
-
-| About                    | Info                               |
-|:-------------------------|:-----------------------------------|
-| Created                  | October 23, 2024 10:43:16                      |
-| API Logic Server Version | 12.00.04           |
-| Created in directory     | genai_demo |
-| API Name                 | api          |
-| Execution begins with    | `api_logic_server_run.py`          |
-
+```bash
+als genai --using=genai_demo.prompt --gen-using-file=system/genai/temp/chatgpt_retry.txt
+```
 
 &nbsp;
 
-# Appendix: Key Technologies
+CLI Notes (effective as of release 11.00.22):
 
-API Logic Server is based on the projects shown below.
-Consult their documentation for important information.
+* Projects are created in the your current working folder (typically the manager root directory).  They were formerly created adjacent to the `gen-using-file`.
 
-&nbsp;
+* The project name is the last node of `--using`.  This is a required argument, since it denotes the project directory name.
 
-### SARFS JSON:API Server
+We have seen failures such as:
 
-[SAFRS: Python OpenAPI & JSON:API Framework](https://github.com/thomaxxl/safrs)
-
-SAFRS is an acronym for SqlAlchemy Flask-Restful Swagger.
-The purpose of this framework is to help python developers create
-a self-documenting JSON API for sqlalchemy database objects and relationships.
-
-These objects are serialized to JSON and 
-created, retrieved, updated and deleted through the JSON API.
-Optionally, custom resource object methods can be exposed and invoked using JSON.
-
-Class and method descriptions and examples can be provided
-in yaml syntax in the code comments.
-
-The description is parsed and shown in the swagger web interface.
-The result is an easy-to-use
-swagger/OpenAPI and JSON:API compliant API implementation.
+* duplicate definition of `DECIMAL` (we hand-fix the response to fix this)
+* unclosed parentheses
+* data type errors in test data creation
+* wrong engine import: from logic_bank import Engine, constraint
+* bad test data creation: with Engine() as engine...
+* Bad load code (no session)
+* missing datetime import
+* relationship property errors ("mapper has no property...")
 
 &nbsp;
 
-### LogicBank
-[Transaction Logic for SQLAlchemy Object Models](https://apilogicserver.github.io/Docs/Logic-Why/)
+#### Diagnosis Tips
 
-Use Logic Bank to govern SQLAlchemy update transaction logic - 
-multi-table derivations, constraints, and actions such as sending mail or messages. Logic consists of _both:_
+The system saves files used for creation: 
 
-*   **Rules - 40X** more concise using a spreadsheet-like paradigm, and
+![Customize](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/sample-ai/copilot/diagnostic_info.png?raw=true)
 
-*   **Python - control and extensibility,** using standard tools and techniques
+Note there are multiple diagostic directories.  recall GenAI results are not always predictable, so we make 3 attempts to get a successful result.  This is often enough, but examining the failures can be useful.
 
-Logic Bank is based on SQLAlchemy - it handles `before_flush` events to enforce your logic.
-Your logic therefore applies to any SQLAlchemy-based access - JSON:Api, Admin App, etc.
+A good technique is to:
 
-&nbsp;
+1. **Open the response file in the Manager**, and
+2. Use your IDE to run the file 
 
-### SQLAlchemy
+It's usage create the sqlite database, but running it in this mode can provide more insight into causes.
 
-[Object Relational Mapping for Python](https://docs.sqlalchemy.org/en/13/).
-
-SQLAlchemy provides Python-friendly database access for Python.
-
-It is used by JSON:Api, Logic Bank, and the Admin App.
-
-SQLAlchemy processing is based on Python `model` classes,
-created automatically by API Logic Server from your database,
-and saved in the `database` directory.
+If you are using Web/GenAI (see: https://apilogicserver.github.io/Docs/WebGenAI/), project files are always under /projects/gen_$ID.
 
 &nbsp;
 
-### Admin App
+### Creating `genai_demo`
 
-This generated project also contains a React Admin app:
-* Multi-page - including page transitions to "drill down"
-* Multi-table - master / details (with tab sheets)
-* Intelligent layout - favorite fields first, predictive joins, etc
-* Logic Aware - updates are monitored by business logic
+#### Using WebGenAI
+
+![Creation from WebGenAI](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/sample-ai/genai/genai-prompt.png?raw=true)
+
+View the process in this video: https://www.youtube.com/watch?v=7I33Fa9Ulos 
 
 &nbsp;
 
-### Python Tips
+#### Using the ALS CLI
 
-If you are new to Python, check out [these tips](https://apilogicserver.github.io/Docs/Tech-Python/).
+View: https://www.youtube.com/watch?v=LSh7mqGiT0k&t=5s.
+
+To create a microservice, identify an existing database, or provide a natural language "prompt" description.  
+
+You can explore genai_demo using the Manager https://apilogicserver.github.io/Docs/Manager/.  Optionally, you can sign-up for ChatGPT API and Copilot, or simulate the process as described below.
+
+1. If you have signed up for ChatGPT API and Copilot, this command will create and open a project called `genai_demo` from `system/genai/examples/genai_demo/genai_demo.prompt`:
+
+```bash
+als genai --using=system/genai/examples/genai_demo/genai_demo.prompt
+```
+
+
+2. ***Or,*** if you have not signed up, you can simulate the process using a pre-installed response file:
+
+```bash
+als genai --using=genai_demo.prompt --gen-using-file=system/genai/temp/chatgpt_retry.txt
+```
+
+Here is the `system/genai/examples/genai_demo/genai_demo.prompt` file:
+
+
+&nbsp;
+**Key Takeways - TL;DR - GenAI Prompt**
+&nbsp;
+
+    Create a system with customers, orders, items and products.
+
+    Include a notes field for orders.
+
+    Use LogicBank to enforce business logic.
+
+    Use case: Check Credit
+        1. The Customer's balance is less than the credit limit
+        2. The Customer's balance is the sum of the Order amount_total where date_shipped is null
+        3. The Order's amount_total is the sum of the Item amount
+        4. The Item amount is the quantity * unit_price
+        5. The Item unit_price is copied from the Product unit_price
+
+    Ensure each customer has a unique name.
+
+    Ensure each Item quantity is not null.
+
+    Ensure each order has a valid customer_id that exists in the Customer table.
+
+&nbsp;
+
+### How does it work
+
+When you use the WebGenAI website, it captures your prompt, and submits to the als system
+using its provided CLI (`als genai').  `genai` processing is shown below (internal steps denoted in grey):
+
+1. You create your.prompt file, and invoke `als genai --using=your.prompt`.  genai then creates your database and project as follows:
+
+    a. Submits your prompt to the `ChatGPT API`
+
+    b. Writes the response to file (`system/genai/temp/response.json`), so you can correct and retry if anything goes wrong
+
+    c. Extracts `system/genai/temp/create_db_models.py` from the response
+
+    d. Invokes `als create-from-model`, which creates the database and your project
+
+2. Your created project is opened in your IDE, ready to execute and customize.
+
+![Microservice Automation](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/sample-ai/copilot/genai.png?raw=true)
+
+&nbsp;
+
+### GenAI Using Postgresql
+
+The above examples use *sqlite,* since it requires no install.  The GenAI process works for other database, such as Postgresql.
+
+You can test this as follows:
+
+1. Use our docker image: https://apilogicserver.github.io/Docs/Database-Docker/
+2. And:
+
+```bash
+als create --project-name=genai_demo_pg.prompt --db-url=postgresql://postgres:p@localhost/genai_demo
+```
+
+Provisos:
+
+* You have to create the database first
+

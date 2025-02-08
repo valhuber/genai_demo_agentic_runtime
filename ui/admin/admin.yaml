@@ -1,5 +1,5 @@
 about:
-  date: October 23, 2024 10:43:16
+  date: February 05, 2025 14:26:18
   recent_changes: works with modified safrs-react-admin
   version: 0.0.0
 api_root: '{http_type}://{swagger_host}:{port}/{api}'
@@ -13,16 +13,17 @@ resources:
     attributes:
     - label: ' name*'
       name: name
-      required: true
       search: true
       sort: true
     - name: balance
-      required: true
+      type: DECIMAL
     - name: credit_limit
-      required: true
+      type: DECIMAL
     - name: id
-    description: Table representing customers, storing their balance and credit limit.
-    info_list: Table representing customers, storing their balance and credit limit.
+    description: Represents a customer in the system with unique name, balance, and
+      credit limit attributes.
+    info_list: Represents a customer in the system with unique name, balance, and
+      credit limit attributes.
     tab_groups:
     - direction: tomany
       fks:
@@ -38,17 +39,15 @@ resources:
       search: true
       sort: true
     - name: order_id
-      required: true
     - name: product_id
-      required: true
     - name: quantity
       required: true
-    - name: amount
-      required: true
     - name: unit_price
-      required: true
-    description: Table representing items in an order, with quantity and price details.
-    info_list: Table representing items in an order, with quantity and price details.
+      type: DECIMAL
+    - name: amount
+      type: DECIMAL
+    description: Represents an item in an order, including quantity and pricing details.
+    info_list: Represents an item in an order, including quantity and pricing details.
     tab_groups:
     - direction: toone
       fks:
@@ -69,17 +68,13 @@ resources:
       search: true
       sort: true
     - name: customer_id
-      required: true
-    - name: notes
     - name: amount_total
-      required: true
-    - name: date_ordered
-      type: DATETIME
+      type: DECIMAL
+    - name: notes
     - name: date_shipped
-      type: DATETIME
-    description: Table representing customer orders, including a note and shipping
-      date.
-    info_list: Table representing customer orders, including a note and shipping date.
+      type: DATE
+    description: Represents an order made by a customer, including a notes field.
+    info_list: Represents an order made by a customer, including a notes field.
     tab_groups:
     - direction: tomany
       fks:
@@ -97,14 +92,13 @@ resources:
     attributes:
     - label: ' name*'
       name: name
-      required: true
       search: true
       sort: true
     - name: unit_price
-      required: true
+      type: DECIMAL
     - name: id
-    description: Table representing available products with their unit price.
-    info_list: Table representing available products with their unit price.
+    description: Represents a product available in the system with a unit price.
+    info_list: Represents a product available in the system with a unit price.
     tab_groups:
     - direction: tomany
       fks:
@@ -112,6 +106,94 @@ resources:
       name: ItemList
       resource: Item
     type: Product
+    user_key: name
+  SPAComponent:
+    attributes:
+    - hidden: true
+      name: id
+      required: true
+    - name: Type
+    - name: prompt
+      type: textarea
+    - name: user_comments
+      type: textarea
+    - name: created_at
+      type: datetime
+    - name: ai_comments
+      type: textarea
+    - label: name
+      name: name
+      required: true
+      search: true
+    - name: code
+      type: textarea
+    hidden: true
+    order: 2002
+    sort: -created_at
+    tab_groups:
+    - direction: tomany
+      fks:
+      - id
+      name: ChildList
+      resource: SPAComponent
+    type: SPAComponent
+    user_key: name
+  SPAPage:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: id
+      required: true
+    - name: contact
+    hidden: true
+    order: 2000
+    tab_groups:
+    - direction: tomany
+      fks:
+      - page_id
+      name: SectionList
+      resource: Section
+    type: SPAPage
+    user_key: name
+  SPASection:
+    attributes:
+    - name: order
+      sort: true
+      type: number
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+    - name: page_id
+    - name: title
+      required: true
+    - name: subtitle
+    - name: label
+    - name: Type
+    - name: paragraph
+      type: textarea
+    - name: content
+      type: textarea
+    - name: id
+    - name: background
+    - name: template
+    - name: style
+      type: json
+    - name: hidden
+      type: boolean
+    hidden: true
+    order: 2001
+    sort: order
+    tab_groups:
+    - direction: toone
+      fks:
+      - page_id
+      name: page
+      resource: SPASection
+    type: SPASection
     user_key: name
 settings:
   HomeJS: /admin-app/home.js

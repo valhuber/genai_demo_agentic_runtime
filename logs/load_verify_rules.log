@@ -1,0 +1,65 @@
+Loading rules from /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/logic/wg_rules
+/opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/docs/export/export.json does not exist
+Loading rules from /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/logic/wg_rules
+01JKB82RA96Z6AP9KMV92XAY4F rule file: logic/wg_rules/Customer_Balance_Constraint.py
+01JKB82RACXVTNXZT9DTFBTSQC rule file: logic/wg_rules/Customer_Balance_Derivation.py
+01JKB82RADYPSTZ7TEHKDNZ0C8 rule file: logic/wg_rules/Order_Amount_Total_Derivation.py
+01JKB82RAES56PEDRYNW0P4B0Y rule file: logic/wg_rules/Item_Amount_Derivation.py
+01JKB82RAEQKQRWV4S8R141YTQ rule file: logic/wg_rules/Copy_Item_Unit_Price.py
+01JKB82RAF54M07V3M86EE99VZ rule file: logic/wg_rules/Order_Kafka_Integration.py
+01JKB82RA96Z6AP9KMV92XAY4F rule file: logic/wg_rules/Customer_Balance_Constraint.py
+01JKB82RACXVTNXZT9DTFBTSQC rule file: logic/wg_rules/Customer_Balance_Derivation.py
+01JKB82RADYPSTZ7TEHKDNZ0C8 rule file: logic/wg_rules/Order_Amount_Total_Derivation.py
+01JKB82RAES56PEDRYNW0P4B0Y rule file: logic/wg_rules/Item_Amount_Derivation.py
+01JKB82RAEQKQRWV4S8R141YTQ rule file: logic/wg_rules/Copy_Item_Unit_Price.py
+01JKB82RAF54M07V3M86EE99VZ rule file: logic/wg_rules/Order_Kafka_Integration.py
+
+[34mVerifying rule: Customer_Balance_Constraint - 01JKB82RA96Z6AP9KMV92XAY4F[0m
+
+[32mActivated rule 01JKB82RA96Z6AP9KMV92XAY4F[0m
+
+[34mVerifying rule: Customer_Balance_Derivation - 01JKB82RACXVTNXZT9DTFBTSQC[0m
+
+[32mActivated rule 01JKB82RACXVTNXZT9DTFBTSQC[0m
+
+[34mVerifying rule: Order_Amount_Total_Derivation - 01JKB82RADYPSTZ7TEHKDNZ0C8[0m
+
+[32mActivated rule 01JKB82RADYPSTZ7TEHKDNZ0C8[0m
+
+[34mVerifying rule: Item_Amount_Derivation - 01JKB82RAES56PEDRYNW0P4B0Y[0m
+
+[32mActivated rule 01JKB82RAES56PEDRYNW0P4B0Y[0m
+
+[34mVerifying rule: Copy_Item_Unit_Price - 01JKB82RAEQKQRWV4S8R141YTQ[0m
+
+[32mActivated rule 01JKB82RAEQKQRWV4S8R141YTQ[0m
+
+[34mVerifying rule: Order_Kafka_Integration - 01JKB82RAF54M07V3M86EE99VZ[0m
+
+[32mActivated rule 01JKB82RAF54M07V3M86EE99VZ[0m
+Loading rules from /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/logic/wg_rules
+01JKB82RA96Z6AP9KMV92XAY4F rule file: logic/wg_rules/Customer_Balance_Constraint.py
+01JKB82RACXVTNXZT9DTFBTSQC rule file: logic/wg_rules/Customer_Balance_Derivation.py
+01JKB82RADYPSTZ7TEHKDNZ0C8 rule file: logic/wg_rules/Order_Amount_Total_Derivation.py
+01JKB82RAES56PEDRYNW0P4B0Y rule file: logic/wg_rules/Item_Amount_Derivation.py
+01JKB82RAEQKQRWV4S8R141YTQ rule file: logic/wg_rules/Copy_Item_Unit_Price.py
+01JKB82RAF54M07V3M86EE99VZ rule file: logic/wg_rules/Order_Kafka_Integration.py
+[32mLoading Rule Module Customer_Balance_Constraint 01JKB82RA96Z6AP9KMV92XAY4F [0m
+[32mLoading Rule Module Customer_Balance_Derivation 01JKB82RACXVTNXZT9DTFBTSQC [0m
+[32mLoading Rule Module Order_Amount_Total_Derivation 01JKB82RADYPSTZ7TEHKDNZ0C8 [0m
+[32mLoading Rule Module Item_Amount_Derivation 01JKB82RAES56PEDRYNW0P4B0Y [0m
+[32mLoading Rule Module Copy_Item_Unit_Price 01JKB82RAEQKQRWV4S8R141YTQ [0m
+[32mLoading Rule Module Order_Kafka_Integration 01JKB82RAF54M07V3M86EE99VZ [0m
+Loading rules from /opt/projects/by-ulid/01JKB807WMNRKECY2F1ZRGE935/logic/wg_rules
+01JKB82RA96Z6AP9KMV92XAY4F rule file: logic/wg_rules/Customer_Balance_Constraint.py
+01JKB82RACXVTNXZT9DTFBTSQC rule file: logic/wg_rules/Customer_Balance_Derivation.py
+01JKB82RADYPSTZ7TEHKDNZ0C8 rule file: logic/wg_rules/Order_Amount_Total_Derivation.py
+01JKB82RAES56PEDRYNW0P4B0Y rule file: logic/wg_rules/Item_Amount_Derivation.py
+01JKB82RAEQKQRWV4S8R141YTQ rule file: logic/wg_rules/Copy_Item_Unit_Price.py
+01JKB82RAF54M07V3M86EE99VZ rule file: logic/wg_rules/Order_Kafka_Integration.py
+[32mLoading Rule Module Customer_Balance_Constraint 01JKB82RA96Z6AP9KMV92XAY4F [0m
+[32mLoading Rule Module Customer_Balance_Derivation 01JKB82RACXVTNXZT9DTFBTSQC [0m
+[32mLoading Rule Module Order_Amount_Total_Derivation 01JKB82RADYPSTZ7TEHKDNZ0C8 [0m
+[32mLoading Rule Module Item_Amount_Derivation 01JKB82RAES56PEDRYNW0P4B0Y [0m
+[32mLoading Rule Module Copy_Item_Unit_Price 01JKB82RAEQKQRWV4S8R141YTQ [0m
+[32mLoading Rule Module Order_Kafka_Integration 01JKB82RAF54M07V3M86EE99VZ [0m

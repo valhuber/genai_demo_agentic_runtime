@@ -14,7 +14,7 @@
         "editor.wordWrap": "off"
     },
     "debug.console.wordWrap": false,    
-    "python.defaultInterpreterPath": "/Users/val/dev/ApiLogicServer/ApiLogicServer-dev/build_and_test/ApiLogicServer/venv/bin/python",
+    "python.defaultInterpreterPath": "/usr/local/bin/python",
     "workbench.editorAssociations": {
         "*.md": "vscode.markdown.preview.editor"
     }
