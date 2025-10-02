@@ -55,7 +55,7 @@ def declare_logic():
         if row.product.count_suppliers == 0:
             logic_row.debug(f"Item {row.id} has no order or order has no supplier; unit_price not set from supplier")
             return row.product.unit_price  # No change if no supplier
-        # #als: triggered inserts - https://apilogicserver.github.io/Docs/Logic-Use/#in-logic 
+        # #als: triggered inserts - https://apilogicserver.github.io/Docs/Logic-Use/#in-logic TODO: fix
         sys_supplier_req_logic_row : models.SysSupplierReq = logic_row.new_logic_row(models.SysSupplierReq)
         sys_supplier_req = sys_supplier_req_logic_row.row
         sys_supplier_req_logic_row.link(to_parent=logic_row)
@@ -65,7 +65,7 @@ def declare_logic():
         sys_supplier_req_logic_row.insert(reason="Supplier Svc Request ", row=sys_supplier_req)  # triggers rules...
         return sys_supplier_req.chosen_unit_price
     
-    ''' proposed by GPT
+    ''' proposed by GPT (unused)
     supplier_id = row.order.supplier_id
     product_id = row.product_id
     ps = session.query(models.ProductSupplier).filter_by(supplier_id=supplier_id, product_id=product_id).first()
