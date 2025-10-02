@@ -10,7 +10,7 @@ Order: Represents an order made by a customer, including a notes field.
 Product: Represents a product available in the system with a unit price.
 ProductSupplier: Intersection table linking products to their suppliers with supply-specific information.
 Supplier: Represents a supplier that can provide products to the system.
-SysSupplierReq: System table for tracking supplier requests and AI-driven supplier selection for orders.
+SysSupplierReq: System table for tracking supplier requests and AI-driven supplier selection for items and products.
 '''
 }
 
@@ -42,6 +42,7 @@ Table Product {
     id INTEGER [primary key]
     name VARCHAR 
     unit_price DECIMAL 
+    count_suppliers INTEGER 
     }
 
 Table ProductSupplier {
@@ -60,12 +61,12 @@ Table Supplier {
     phone VARCHAR 
     email VARCHAR 
     region VARCHAR 
-    count_suppliers INTEGER 
     }
 
 Table SysSupplierReq {
     id INTEGER [primary key]
-    order_id INTEGER 
+    item_id INTEGER 
+    product_id INTEGER 
     payload JSON 
     top_n JSON 
     chosen_supplier_id INTEGER 
@@ -81,5 +82,6 @@ Table SysSupplierReq {
     Ref: Order.(customer_id) < Customer.(id)
     Ref: ProductSupplier.(product_id) < Product.(id)
     Ref: ProductSupplier.(supplier_id) < Supplier.(id)
-    Ref: SysSupplierReq.(order_id) < Order.(id)
+    Ref: SysSupplierReq.(item_id) < Item.(id)
+    Ref: SysSupplierReq.(product_id) < Product.(id)
     Ref: SysSupplierReq.(chosen_supplier_id) < Supplier.(id)

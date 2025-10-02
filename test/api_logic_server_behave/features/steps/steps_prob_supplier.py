@@ -2,8 +2,8 @@
 # Pseudo step defs — adapt to your project's fixtures/session helpers.
 from behave import given, when, then
 from sqlalchemy.orm import Session
-from models_min import Supplier, SysSupplierReq
-from models import Order, Item, Product  # adapt import
+from database.models import Supplier, SysSupplierReq
+from database.models import Order, Item, Product  # adapt import
 from datetime import date, timedelta
 import json
 

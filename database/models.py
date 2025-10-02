@@ -74,12 +74,14 @@ class Product(Base):  # type: ignore
     id = Column(Integer, primary_key=True)
     name = Column(String)
     unit_price : DECIMAL = Column(DECIMAL)
+    count_suppliers = Column(Integer)
 
     # parent relationships (access parent)
 
     # child relationships (access children)
     ItemList : Mapped[List["Item"]] = relationship(back_populates="product")
     ProductSupplierList : Mapped[List["ProductSupplier"]] = relationship(back_populates="product")
+    SysSupplierReqList : Mapped[List["SysSupplierReq"]] = relationship(back_populates="product")
 
 
 
@@ -96,7 +98,6 @@ class Supplier(Base):  # type: ignore
     phone = Column(String)
     email = Column(String)
     region = Column(String)
-    count_suppliers = Column(Integer)
 
     # parent relationships (access parent)
 
@@ -144,7 +145,6 @@ class Order(Base):  # type: ignore
 
     # child relationships (access children)
     ItemList : Mapped[List["Item"]] = relationship(back_populates="order")
-    SysSupplierReqList : Mapped[List["SysSupplierReq"]] = relationship(back_populates="order")
 
 
 
@@ -167,18 +167,20 @@ class Item(Base):  # type: ignore
     product : Mapped["Product"] = relationship(back_populates=("ItemList"))
 
     # child relationships (access children)
+    SysSupplierReqList : Mapped[List["SysSupplierReq"]] = relationship(back_populates="item")
 
 
 
 class SysSupplierReq(Base):  # type: ignore
     """
-    description: System table for tracking supplier requests and AI-driven supplier selection for orders.
+    description: System table for tracking supplier requests and AI-driven supplier selection for items and products.
     """
     __tablename__ = "sys_supplier_req"
     _s_collection_name = 'SysSupplierReq'  # type: ignore
 
     id = Column(Integer, primary_key=True)
-    order_id = Column(Integer, ForeignKey("order.id"), index=True, nullable=False)
+    item_id = Column(Integer, ForeignKey("item.id"), index=True, nullable=False)
+    product_id = Column(Integer, ForeignKey("product.id"), index=True, nullable=False)
     payload = Column(JSON)                  # inputs used for ranking (per-line summary)
     top_n   = Column(JSON)                  # ranked candidates with rationales
     chosen_supplier_id = Column(Integer, ForeignKey("supplier.id"))
@@ -186,7 +188,8 @@ class SysSupplierReq(Base):  # type: ignore
     created_on = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
 
     # parent relationships (access parent)
-    order : Mapped["Order"] = relationship(back_populates="SysSupplierReqList")
+    item : Mapped["Item"] = relationship(back_populates="SysSupplierReqList")
+    product : Mapped["Product"] = relationship(back_populates="SysSupplierReqList")
     chosen_supplier : Mapped["Supplier"] = relationship()
 
     # child relationships (access children)

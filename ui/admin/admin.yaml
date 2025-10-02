@@ -59,6 +59,11 @@ resources:
       - product_id
       name: product
       resource: Product
+    - direction: tomany
+      fks:
+      - item_id
+      name: SysSupplierReqList
+      resource: SysSupplierReq
     type: Item
     user_key: id
   Order:
@@ -81,11 +86,6 @@ resources:
       - order_id
       name: ItemList
       resource: Item
-    - direction: tomany
-      fks:
-      - order_id
-      name: SysSupplierReqList
-      resource: SysSupplierReq
     - direction: toone
       fks:
       - customer_id
@@ -101,6 +101,8 @@ resources:
       sort: true
     - name: unit_price
       type: DECIMAL
+    - name: count_suppliers
+      type: number
     - name: id
     description: Represents a product available in the system with a unit price.
     info_list: Represents a product available in the system with a unit price.
@@ -115,6 +117,11 @@ resources:
       - product_id
       name: ProductSupplierList
       resource: ProductSupplier
+    - direction: tomany
+      fks:
+      - product_id
+      name: SysSupplierReqList
+      resource: SysSupplierReq
     type: Product
     user_key: name
   ProductSupplier:
@@ -247,8 +254,6 @@ resources:
     - name: email
     - name: region
       search: true
-    - name: count_suppliers
-      type: number
     - name: id
     description: Represents a supplier that can provide products to the system.
     info_list: Supplier companies that provide products with contact information.
@@ -266,7 +271,8 @@ resources:
       name: id
       search: true
       sort: true
-    - name: order_id
+    - name: item_id
+    - name: product_id
     - name: chosen_supplier_id
     - name: reason
       search: true
@@ -278,15 +284,20 @@ resources:
     - name: top_n
       type: json
     description: System table for tracking supplier requests and AI-driven supplier
-      selection for orders.
+      selection for items and products.
     info_list: Tracks AI-driven supplier selection decisions with reasoning and audit
       trail.
     tab_groups:
     - direction: toone
       fks:
-      - order_id
-      name: order
-      resource: Order
+      - item_id
+      name: item
+      resource: Item
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
     - direction: toone
       fks:
       - chosen_supplier_id
