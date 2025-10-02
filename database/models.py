@@ -179,7 +179,7 @@ class SysSupplierReq(Base):  # type: ignore
     _s_collection_name = 'SysSupplierReq'  # type: ignore
 
     id = Column(Integer, primary_key=True)
-    item_id = Column(Integer, ForeignKey("item.id"), index=True, nullable=False)
+    item_id = Column(Integer, ForeignKey("item.id"), index=True, nullable=True)
     product_id = Column(Integer, ForeignKey("product.id"), index=True, nullable=False)
     payload = Column(JSON)                  # inputs used for ranking (per-line summary)
     top_n   = Column(JSON)                  # ranked candidates with rationales

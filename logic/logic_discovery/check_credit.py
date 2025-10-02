@@ -54,8 +54,17 @@ def declare_logic():
     def ItemUnitPriceFromSupplier(row: models.Item, old_row: models.Item, logic_row: LogicRow):
         if row.product.count_suppliers == 0:
             logic_row.debug(f"Item {row.id} has no order or order has no supplier; unit_price not set from supplier")
-            return row.unit_price  # No change if no supplier
-        '''
+            return row.product.unit_price  # No change if no supplier
+        # #als: triggered inserts - https://apilogicserver.github.io/Docs/Logic-Use/#in-logic 
+        sys_supplier_req_logic_row : models.SysSupplierReq = logic_row.new_logic_row(models.SysSupplierReq)
+        sys_supplier_req = sys_supplier_req_logic_row.row
+        sys_supplier_req_logic_row.link(to_parent=logic_row)
+        sys_supplier_req.product_id = row.product_id
+        sys_supplier_req.item_id = row.id
+        # this calls choose_supplier_for_item_with_ai, which sets chosen_supplier_id and chosen_unit_price
+        sys_supplier_req_logic_row.insert(reason="Supplier Svc Request ", row=sys_supplier_req)  # triggers rules...
+        return sys_supplier_req.chosen_unit_price
+        ''' proposed by GPT
         supplier_id = row.order.supplier_id
         product_id = row.product_id
         ps = session.query(models.ProductSupplier).filter_by(supplier_id=supplier_id, product_id=product_id).first()
@@ -68,4 +77,28 @@ def declare_logic():
         '''
     
     Rule.formula(derive=models.Item.unit_price, calling=ItemUnitPriceFromSupplier)
+
+    def choose_supplier_for_item_with_ai(row: models.SysSupplierReq, old_row: models.SysSupplierReq, logic_row: LogicRow):
+        '''  Choose a supplier for the SysSupplierReq using AI (simulated here).
+             Sets chosen_supplier_id and chosen_unit_price on the SysSupplierReq row.
+        '''
+        if logic_row.is_inserted():
+            # Call AI service to choose supplier based on payload and top_n
+            # For demonstration, we'll just pick the first from top_n if available
+            for each_supplier in row.product.product_supplier_list:
+                logic_row.log(f"SysSupplierReq {row.id} has supplier candidate {each_supplier.supplier_id} with rationale {each_supplier.rationale}")
+                if row.chosen_supplier is None:
+                    row.chosen_supplier_id = each_supplier.supplier_id
+                    row.chosen_unit_price = each_supplier.unit_cost
+                    logic_row.debug(f"Chosen supplier {row.chosen_supplier_id} for SysSupplierReq {row.id} by default (first candidate)")
+            ''' proposed by GPT
+            if row.top_n and isinstance(row.top_n, list) and len(row.top_n) > 0:
+                chosen = row.top_n[0]  # In real case, call AI to choose
+                row.chosen_supplier_id = chosen.get("supplier_id")
+                logic_row.debug(f"Chosen supplier {row.chosen_supplier_id} for SysSupplierReq {row.id} using AI")
+            else:
+                logic_row.debug(f"No candidates in top_n to choose from for SysSupplierReq {row.id}")
+            '''
+
+    Rule.early_row_event(models.SysSupplierReq, calling=choose_supplier_for_item_with_ai)
 
