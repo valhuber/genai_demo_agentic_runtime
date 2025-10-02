@@ -8,6 +8,9 @@ Customer: Represents a customer in the system with unique name, balance, and cre
 Item: Represents an item in an order, including quantity and pricing details.
 Order: Represents an order made by a customer, including a notes field.
 Product: Represents a product available in the system with a unit price.
+ProductSupplier: Intersection table linking products to their suppliers with supply-specific information.
+Supplier: Represents a supplier that can provide products to the system.
+SysSupplierReq: System table for tracking supplier requests and AI-driven supplier selection for orders.
 '''
 }
 
@@ -41,9 +44,42 @@ Table Product {
     unit_price DECIMAL 
     }
 
+Table ProductSupplier {
+    id INTEGER [primary key]
+    product_id INTEGER 
+    supplier_id INTEGER 
+    supplier_part_number VARCHAR 
+    unit_cost DECIMAL 
+    lead_time_days INTEGER 
+    }
+
+Table Supplier {
+    id INTEGER [primary key]
+    name VARCHAR 
+    contact_name VARCHAR 
+    phone VARCHAR 
+    email VARCHAR 
+    region VARCHAR 
+    count_suppliers INTEGER 
+    }
+
+Table SysSupplierReq {
+    id INTEGER [primary key]
+    order_id INTEGER 
+    payload JSON 
+    top_n JSON 
+    chosen_supplier_id INTEGER 
+    reason VARCHAR 
+    created_on DATETIME 
+    }
+
 
 
 // Relationships
     Ref: Item.(order_id) < Order.(id)
     Ref: Item.(product_id) < Product.(id)
     Ref: Order.(customer_id) < Customer.(id)
+    Ref: ProductSupplier.(product_id) < Product.(id)
+    Ref: ProductSupplier.(supplier_id) < Supplier.(id)
+    Ref: SysSupplierReq.(order_id) < Order.(id)
+    Ref: SysSupplierReq.(chosen_supplier_id) < Supplier.(id)

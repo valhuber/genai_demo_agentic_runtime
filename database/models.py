@@ -1,6 +1,7 @@
 # coding: utf-8
+import datetime
 from sqlalchemy import DECIMAL, DateTime  # API Logic Server GenAI assist
-from sqlalchemy import Column, DECIMAL, Date, ForeignKey, Integer, String
+from sqlalchemy import Column, DECIMAL, Date, ForeignKey, Integer, String, JSON
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -78,8 +79,52 @@ class Product(Base):  # type: ignore
 
     # child relationships (access children)
     ItemList : Mapped[List["Item"]] = relationship(back_populates="product")
+    ProductSupplierList : Mapped[List["ProductSupplier"]] = relationship(back_populates="product")
 
 
+
+class Supplier(Base):  # type: ignore
+    """
+    description: Represents a supplier that can provide products to the system.
+    """
+    __tablename__ = 'supplier'
+    _s_collection_name = 'Supplier'  # type: ignore
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    contact_name = Column(String)
+    phone = Column(String)
+    email = Column(String)
+    region = Column(String)
+    count_suppliers = Column(Integer)
+
+    # parent relationships (access parent)
+
+    # child relationships (access children)
+    ProductSupplierList : Mapped[List["ProductSupplier"]] = relationship(back_populates="supplier")
+
+
+
+class ProductSupplier(Base):  # type: ignore
+    """
+    description: Intersection table linking products to their suppliers with supply-specific information.
+    """
+    __tablename__ = 'product_supplier'
+    _s_collection_name = 'ProductSupplier'  # type: ignore
+
+    id = Column(Integer, primary_key=True)
+    product_id = Column(ForeignKey('product.id'))
+    supplier_id = Column(ForeignKey('supplier.id'))
+    supplier_part_number = Column(String)
+    unit_cost : DECIMAL = Column(DECIMAL)
+    lead_time_days = Column(Integer)
+
+    # parent relationships (access parent)
+    product : Mapped["Product"] = relationship(back_populates=("ProductSupplierList"))
+    supplier : Mapped["Supplier"] = relationship(back_populates=("ProductSupplierList"))
+
+    # child relationships (access children)
+    
 
 class Order(Base):  # type: ignore
     """
@@ -99,6 +144,7 @@ class Order(Base):  # type: ignore
 
     # child relationships (access children)
     ItemList : Mapped[List["Item"]] = relationship(back_populates="order")
+    SysSupplierReqList : Mapped[List["SysSupplierReq"]] = relationship(back_populates="order")
 
 
 
@@ -119,5 +165,28 @@ class Item(Base):  # type: ignore
     # parent relationships (access parent)
     order : Mapped["Order"] = relationship(back_populates=("ItemList"))
     product : Mapped["Product"] = relationship(back_populates=("ItemList"))
+
+    # child relationships (access children)
+
+
+
+class SysSupplierReq(Base):  # type: ignore
+    """
+    description: System table for tracking supplier requests and AI-driven supplier selection for orders.
+    """
+    __tablename__ = "sys_supplier_req"
+    _s_collection_name = 'SysSupplierReq'  # type: ignore
+
+    id = Column(Integer, primary_key=True)
+    order_id = Column(Integer, ForeignKey("order.id"), index=True, nullable=False)
+    payload = Column(JSON)                  # inputs used for ranking (per-line summary)
+    top_n   = Column(JSON)                  # ranked candidates with rationales
+    chosen_supplier_id = Column(Integer, ForeignKey("supplier.id"))
+    reason = Column(String(500))
+    created_on = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
+
+    # parent relationships (access parent)
+    order : Mapped["Order"] = relationship(back_populates="SysSupplierReqList")
+    chosen_supplier : Mapped["Supplier"] = relationship()
 
     # child relationships (access children)
