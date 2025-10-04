@@ -1,8 +1,12 @@
 import datetime
 from decimal import Decimal
+import json
+import os
+from time import time
 from logic_bank.exec_row_logic.logic_row import LogicRow
 from logic_bank.extensions.rule_extensions import RuleExtension
 from logic_bank.logic_bank import Rule
+from openai import OpenAI
 from database import models
 import logging
 
@@ -55,7 +59,7 @@ def declare_logic():
         if row.product.count_suppliers == 0:
             logic_row.debug(f"Item {row.id} has no order or order has no supplier; unit_price not set from supplier")
             return row.product.unit_price  # No change if no supplier
-        # #als: triggered inserts - https://apilogicserver.github.io/Docs/Logic-Use/#in-logic TODO: fix
+        # #als: triggered inserts - https://apilogicserver.github.io/Docs/Logic-Use/#in-logic
         sys_supplier_req_logic_row : models.SysSupplierReq = logic_row.new_logic_row(models.SysSupplierReq)
         sys_supplier_req = sys_supplier_req_logic_row.row
         sys_supplier_req_logic_row.link(to_parent=logic_row)
@@ -64,42 +68,76 @@ def declare_logic():
         # this calls choose_supplier_for_item_with_ai, which sets chosen_supplier_id and chosen_unit_price
         sys_supplier_req_logic_row.insert(reason="Supplier Svc Request ", row=sys_supplier_req)  # triggers rules...
         return sys_supplier_req.chosen_unit_price
-    
-    ''' proposed by GPT (unused)
-    supplier_id = row.order.supplier_id
-    product_id = row.product_id
-    ps = session.query(models.ProductSupplier).filter_by(supplier_id=supplier_id, product_id=product_id).first()
-    if ps and ps.last_quote is not None:
-        app_logger.debug(f"Item {item.id} unit_price set from supplier {supplier_id} last_quote {ps.last_quote}")
-        return ps.last_quote
-    else:
-        app_logger.debug(f"Item {item.id} has no matching ProductSupplier for supplier {supplier_id}; unit_price not changed")
-        return item.unit_price  # No change if no matching ProductSupplier
-    '''
-    
+
     Rule.formula(derive=models.Item.unit_price, calling=ItemUnitPriceFromSupplier)
+
 
     def choose_supplier_for_item_with_ai(row: models.SysSupplierReq, old_row: models.SysSupplierReq, logic_row: LogicRow):
         '''  Choose a supplier for the SysSupplierReq using AI (simulated here).
              Sets chosen_supplier_id and chosen_unit_price on the SysSupplierReq row.
+             If no APIKey (use the stub out) or ai error, defaults to first candidate.
         '''
+        def call_ai_service_to_choose_supplier(suppliers: list[models.ProductSupplier]) -> tuple[models.ProductSupplier, str]:
+            # Simulate AI service call - in reality, this would call an external AI service
+            return_supplier = None            
+            debug_test = True  # Set True to simulate a disruption scenario
+            start_time = time()
+            api_key = os.getenv("APILOGICSERVER_CHATGPT_APIKEY")
+            if not api_key:
+                reasoning = "Failure: no API key for AI service; defaulting to first supplier"
+            else:
+                client = OpenAI(api_key=api_key)
+                world_conditions = 'ship aground in Suez Canal' if debug_test else ''
+                supplier_options = [{'supplier_id': s.supplier_id, 'unit_cost': float(s.unit_cost), 'lead_time_days': s.lead_time_days} 
+                        for s in suppliers]
+                messages = [
+                    {"role": "system", "content": "You are a supply chain optimization assistant that selects the best supplier based on cost, lead time, and current world conditions. You must respond with valid JSON only.  Customers are US only."},
+                    {"role": "user", "content": f"Current world conditions: {world_conditions}"},
+                    {"role": "user", "content": f"Supplier options: {json.dumps(supplier_options)}"},
+                    {"role": "user", "content": """Respond with a JSON object containing:
+                    - 'reasoning': A brief explanation of your decision process
+                    - 'ai_supplier': An object with 'supplier_id', 'unit_cost', and 'lead_time_days' for your selected supplier"""}
+                ]
+                completion = client.chat.completions.create(
+                    model='gpt-4o-2024-08-06',
+                    messages=messages,
+                    response_format={"type": "json_object"}
+                )
+                data = completion.choices[0].message.content
+                response_dict = json.loads(data)  # Now guaranteed to be pure JSON
+                
+                # Extract reasoning and chosen supplier
+                reasoning = response_dict.get('reasoning', 'No reasoning provided')
+                ai_supplier_id = response_dict.get('ai_supplier', {}).get('supplier_id')
+                
+                if not ai_supplier_id:
+                    reasoning = "Failure: AI response missing 'ai_supplier' field"
+                else:
+                    for supplier in suppliers:  # Find the selected supplier in our list
+                        if supplier.supplier_id == ai_supplier_id:
+                            return_supplier = supplier
+                            break
+                    if return_supplier is None:
+                        reasoning = f"AI selected supplier {ai_supplier_id} not found in candidates, using first available"
+                    
+            if return_supplier is None:  # Fallback if AI selected supplier not found
+                return_supplier = suppliers[0]
+            return return_supplier, reasoning
+        
+        
         if logic_row.is_inserted():
             # Call AI service to choose supplier based on payload and top_n
             # For demonstration, we'll just pick the first from top_n if available
+            suppliers = []
+            chosen_supplier = None
             for each_supplier in row.product.ProductSupplierList:
-                logic_row.log(f"SysSupplierReq {row.id} has supplier candidate {each_supplier.supplier_id} ")
-                if row.chosen_supplier is None:
-                    row.chosen_supplier_id = each_supplier.supplier_id
-                    row.chosen_unit_price = each_supplier.unit_cost
-                    logic_row.log(f"Chosen supplier {row.chosen_supplier_id} for SysSupplierReq {row.id} by default (first candidate)")
-            ''' proposed by GPT
-            if row.top_n and isinstance(row.top_n, list) and len(row.top_n) > 0:
-                chosen = row.top_n[0]  # In real case, call AI to choose
-                row.chosen_supplier_id = chosen.get("supplier_id")
-                logic_row.debug(f"Chosen supplier {row.chosen_supplier_id} for SysSupplierReq {row.id} using AI")
-            else:
-                logic_row.debug(f"No candidates in top_n to choose from for SysSupplierReq {row.id}")
-            '''
+                suppliers.append(each_supplier)
+                # logic_row.log(f"SysSupplierReq {row.id} has supplier candidate {each_supplier.supplier_id} ")
+            chosen_supplier, reason = call_ai_service_to_choose_supplier(suppliers)
+            row.chosen_supplier_id = chosen_supplier.supplier_id
+            row.chosen_unit_price = chosen_supplier.unit_cost
+            row.reason = reason  # might start with "Failed to ..."
+            logic_row.log(f"Chosen supplier {row.chosen_supplier_id} with reason '{reason}' for SysSupplierReq {row.id}")
 
     Rule.early_row_event(models.SysSupplierReq, calling=choose_supplier_for_item_with_ai)
 
