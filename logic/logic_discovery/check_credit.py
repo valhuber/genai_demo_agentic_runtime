@@ -89,7 +89,8 @@ def declare_logic():
             else:
                 client = OpenAI(api_key=api_key)
                 world_conditions = 'ship aground in Suez Canal' if debug_test else ''
-                supplier_options = [{'supplier_id': s.supplier_id, 'unit_cost': float(s.unit_cost), 'lead_time_days': s.lead_time_days} 
+                supplier_options = [{'supplier_id': s.supplier_id, 'unit_cost': float(s.unit_cost), 
+                                     'lead_time_days': s.lead_time_days, 'region': s.region} 
                         for s in suppliers]
                 messages = [
                     {"role": "system", "content": "You are a supply chain optimization assistant that selects the best supplier based on cost, lead time, and current world conditions. You must respond with valid JSON only.  Customers are US only."},
