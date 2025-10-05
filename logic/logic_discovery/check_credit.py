@@ -57,8 +57,9 @@ def declare_logic():
     Rule.count(derive=models.Product.count_suppliers, as_count_of=models.ProductSupplier)
 
     def ItemUnitPriceFromSupplier(row: models.Item, old_row: models.Item, logic_row: LogicRow):
+        """Deterministic rule decides when AI should run."""
         if row.product.count_suppliers == 0:
-            logic_row.debug(f"Item {row.id} has no order or order has no supplier; unit_price not set from supplier")
+            logic_row.debug(f"Item {row.id} - Product not from supplier")
             return row.product.unit_price  # No change if no supplier
         # #als: triggered inserts - https://apilogicserver.github.io/Docs/Logic-Use/#in-logic
         logic_row.log(f"Formula ItemUnitPriceFromSupplier(): use AI to compute unit_price by inserting SysSupplierReq (request pattern) to choose supplier")

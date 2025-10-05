@@ -1,3 +1,4 @@
+TL;DR: Open-source framework that integrates probabilistic AI decisions with deterministic business rules. Working demo shows AI choosing suppliers based on world events (Suez Canal), with automatic validation by existing credit limit rules. pip install ApiLogicServer and run in 2 minutes.
 
 # Probabilistic + Deterministic Rules: A Working Demo
 
