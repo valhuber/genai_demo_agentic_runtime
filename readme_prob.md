@@ -417,7 +417,7 @@ Rule.constraint(validate=models.Order,
 **This represents the ideal enterprise AI architecture**: AI systems free to optimize and innovate, but operating within automatically enforced business guardrails that ensure every decision remains compliant, safe, and aligned with organizational requirements.
 
 ### **Data Model Integration**
-- **`SysSupplierReq`**: Audit trail for AI decisions with payload/reasoning
+- **`SysSupplierReq`**: Audit trail for AI decisions with request/reasoning
 - **`ProductSupplier`**: Supplier options with deterministic data (cost, lead_time)
 - **Hybrid workflow**: DRs trigger PRs, PRs inform DRs
 
@@ -430,7 +430,7 @@ Rule.constraint(validate=models.Order,
 - **Fallback Resilience**: DRs provide deterministic behavior when PRs are unavailable
 
 #### **2. Operational Benefits**
-- **Complete Auditability**: All AI decisions logged in `SysSupplierReq` with reasoning and payload
+- **Complete Auditability**: All AI decisions logged in `SysSupplierReq` with reasoning and request
 - **Explainable AI**: Integration with deterministic context provides clear decision trails
 - **Incremental Adoption**: PRs can be added to existing DR systems without disruption
 - **Domain Expert Leverage**: Business users can understand and modify DR triggers for PR invocation

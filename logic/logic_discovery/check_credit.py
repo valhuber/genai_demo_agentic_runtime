@@ -7,6 +7,7 @@ from logic_bank.exec_row_logic.logic_row import LogicRow
 from logic_bank.extensions.rule_extensions import RuleExtension
 from logic_bank.logic_bank import Rule
 from openai import OpenAI
+from sqlalchemy import JSON
 from database import models
 import logging
 
@@ -77,7 +78,7 @@ def declare_logic():
              Sets chosen_supplier_id and chosen_unit_price on the SysSupplierReq row.
              If no APIKey (use the stub out) or ai error, defaults to first candidate.
         '''
-        def call_ai_service_to_choose_supplier(suppliers: list[models.ProductSupplier]) -> tuple[models.ProductSupplier, str]:
+        def call_ai_service_to_choose_supplier(suppliers: list[models.ProductSupplier]) -> tuple[models.ProductSupplier, str, str]:
             # Simulate AI service call - in reality, this would call an external AI service
             return_supplier = None            
             debug_test = True  # Set True to simulate a disruption scenario
@@ -104,6 +105,7 @@ def declare_logic():
                     response_format={"type": "json_object"}
                 )
                 data = completion.choices[0].message.content
+                request = json.dumps(messages)
                 response_dict = json.loads(data)  # Now guaranteed to be pure JSON
                 
                 # Extract reasoning and chosen supplier
@@ -122,20 +124,24 @@ def declare_logic():
                     
             if return_supplier is None:  # Fallback if AI selected supplier not found
                 return_supplier = suppliers[0]
-            return return_supplier, reasoning
+            return return_supplier, reasoning, request
         
         
         if logic_row.is_inserted():
-            # Call AI service to choose supplier based on payload and top_n
+            # Call AI service to choose supplier based on request and top_n
             # For demonstration, we'll just pick the first from top_n if available
-            suppliers = []
+            suppliers = [] # ProductSupplier rows, plus the supplier.region
             chosen_supplier = None
             for each_supplier in row.product.ProductSupplierList:
-                suppliers.append(each_supplier)
+                # Add supplier with region info to the suppliers list
+                supplier_with_region = each_supplier
+                supplier_with_region.region = each_supplier.supplier.region if hasattr(each_supplier.supplier, 'region') else None
+                suppliers.append(supplier_with_region)
                 # logic_row.log(f"SysSupplierReq {row.id} has supplier candidate {each_supplier.supplier_id} ")
-            chosen_supplier, reason = call_ai_service_to_choose_supplier(suppliers)
+            chosen_supplier, reason, request = call_ai_service_to_choose_supplier(suppliers)
             row.chosen_supplier_id = chosen_supplier.supplier_id
             row.chosen_unit_price = chosen_supplier.unit_cost
+            row.request = request
             row.reason = reason  # might start with "Failed to ..."
             logic_row.log(f"Chosen supplier {row.chosen_supplier_id} with reason '{reason}' for SysSupplierReq {row.id}")
 

@@ -279,8 +279,7 @@ resources:
     - name: created_on
       sort: true
       type: datetime
-    - name: payload
-      type: json
+    - name: request
     - name: top_n
       type: json
     description: System table for tracking supplier requests and AI-driven supplier

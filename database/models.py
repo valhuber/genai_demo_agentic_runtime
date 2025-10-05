@@ -181,7 +181,7 @@ class SysSupplierReq(Base):  # type: ignore
     id = Column(Integer, primary_key=True)
     item_id = Column(Integer, ForeignKey("item.id"), index=True, nullable=True)
     product_id = Column(Integer, ForeignKey("product.id"), index=True, nullable=False)
-    payload = Column(JSON)                  # inputs used for ranking (per-line summary)
+    request = Column(String(2000))          # inputs used for ranking (per-line summary)
     top_n   = Column(JSON)                  # ranked candidates with rationales
     chosen_supplier_id = Column(Integer, ForeignKey("supplier.id"))
     reason = Column(String(500))

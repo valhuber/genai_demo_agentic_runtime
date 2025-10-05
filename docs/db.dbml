@@ -67,7 +67,7 @@ Table SysSupplierReq {
     id INTEGER [primary key]
     item_id INTEGER [null]
     product_id INTEGER 
-    payload JSON 
+    request VARCHAR 
     top_n JSON 
     chosen_supplier_id INTEGER 
     reason VARCHAR 

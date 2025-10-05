@@ -59,7 +59,7 @@ def auto_supplier_assignment(session: Session, changes):
 
         # Audit regardless of outcome
         session.add(SysSupplierReq(
-            order_id=o.id, payload=lines, top_n=slate,
+            order_id=o.id, request=lines, top_n=slate,
             chosen_supplier_id=choice["supplier_id"] if choice else None,
             reason=choice["rationale"] if choice else "no viable supplier"
         ))

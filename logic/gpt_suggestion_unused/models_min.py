@@ -24,7 +24,7 @@ class SysSupplierReq(Base):
     __tablename__ = "sys_supplier_req"
     id = sa.Column(sa.Integer, primary_key=True)
     order_id = sa.Column(sa.Integer, sa.ForeignKey("order.id"), index=True, nullable=False)
-    payload = sa.Column(sa.JSON)                  # inputs used for ranking (per-line summary)
+    request = sa.Column(sa.JSON)                  # inputs used for ranking (per-line summary)
     top_n   = sa.Column(sa.JSON)                  # ranked candidates with rationales
     chosen_supplier_id = sa.Column(sa.Integer, sa.ForeignKey("supplier.id"))
     reason = sa.Column(sa.String(500))
