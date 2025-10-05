@@ -61,6 +61,7 @@ def declare_logic():
             logic_row.debug(f"Item {row.id} has no order or order has no supplier; unit_price not set from supplier")
             return row.product.unit_price  # No change if no supplier
         # #als: triggered inserts - https://apilogicserver.github.io/Docs/Logic-Use/#in-logic
+        logic_row.log(f"Formula ItemUnitPriceFromSupplier(): use AI to compute unit_price by inserting SysSupplierReq (request pattern) to choose supplier")
         sys_supplier_req_logic_row : models.SysSupplierReq = logic_row.new_logic_row(models.SysSupplierReq)
         sys_supplier_req = sys_supplier_req_logic_row.row
         sys_supplier_req_logic_row.link(to_parent=logic_row)
