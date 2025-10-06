@@ -15,7 +15,7 @@ To understand the demo, you will need a basic understanding of GenAI-Logic.
 
 ### What is GenAI-Logic?
 
-**[GenAI-Logic](genai-logic.com)** is an open-source framework ([GitHub](https://github.com/ApiLogicServer/ApiLogicServer-src)) that generates enterprise applications from natural language prompts, then executes them using declarative business rules. It addresses what we call ["The Missing Half of GenAI"](https://medium.com/@valjhuber/the-missing-half-of-genai-and-why-microsofts-ceo-says-it-s-the-future-c6fc05d93640) - reliable, maintainable business logic that current AI code generation fails to produce.
+**[GenAI-Logic](genai-logic.com)** is an open-source framework ([GitHub](https://github.com/ApiLogicServer/ApiLogicServer-src)) that **generates enterprise applications from natural language prompts,** then executes them using declarative business rules. It addresses what we call ["The Missing Half of GenAI"](https://medium.com/@valjhuber/the-missing-half-of-genai-and-why-microsofts-ceo-says-it-s-the-future-c6fc05d93640) - reliable, maintainable business logic that current AI code generation fails to produce.
 
 **Key capabilities:**
 - Generates complete applications (database, API, UI) from prompts, from either [WebGenAI](https://apifabric.ai/admin-app/) or [Copilot vibe](https://medium.com/@valjhuber/vibe-with-copilot-and-genai-logic-925894574125); you can also generate systems from existing databases (e.g. for [MCP](https://medium.com/@valjhuber/vibe-an-mcp-server-declarative-genai-logic-dec16719c004))
