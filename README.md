@@ -185,7 +185,7 @@ The use of the request objects means we have a database row for each AI call.  A
 - ***"Plain"* Procedural GenAI**: Generates procedural code that's hard to maintain. Each validation is custom code scattered across your application.  And it's buggy - AI is known to struggle with complex dependencies.
 - **GenAI-Logic**: Rules are 40× more concise, automatically enforce dependencies, and adapt when requirements change. Change one rule, behavior updates everywhere.
 
-[decl-genai](images/decl-genai.png)
+![decl-genai](images/decl-genai.png)
 
 **Compared to traditional rule engines:**
 - **Rete engines**: Recalculate aggregates on every change (O(n) complexity). Performance degrades with data size.
