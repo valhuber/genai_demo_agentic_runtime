@@ -82,8 +82,7 @@ Rule.constraint(validate=Customer,
 
 We extended this generated system to demonstrate PR/DR integration by adding:
 
-**1. Supplier selection tables** (`Supplier`, `ProductSupplier`, `SysSupplierReq`)
-We did this using **Copilot vibe.**  That is not native to Copilot - ***GenAI-Logic provides learning*** for Copilot to use SQLAlchemy Alembic.  While the focus here is on logic, logic depends on the data model: iterations require data model iterations.  Historically, these have represented friction, even in prior systems that provided declarative rules.  Schema / model automation proved to be yet another valuable aspect of AI.
+**1. Supplier selection tables** (`Supplier`, `ProductSupplier`, `SysSupplierReq`).  See Appendix 1.
 
 **2. A deterministic rule that decides when to invoke AI:** - the relevant code is in `logic/logic_discovery/check_credit.py`.  We replaced the simple `Item.unit_price` rule expression with a rule function:
 
@@ -308,6 +307,18 @@ genai_demo_agentic_runtime/
 - [API Logic Server docs](https://apilogicserver.github.io/Docs/)
 - [Declarative rules reference](https://apilogicserver.github.io/Docs/Logic/)
 - [WebGenAI](https://apilogicserver.github.io/Docs/WebGenAI/)
+
+<br>
+
+## Appendix 1: Data Model
+
+We extended the database model/schema using **Copilot vibe.**  That is not native to Copilot - ***GenAI-Logic provides learning*** for Copilot to use SQLAlchemy Alembic.  While the focus here is on logic, logic depends on the data model: iterations require data model iterations.  Historically, these have represented friction, even in prior systems that provided declarative rules.  Schema / model automation proved to be yet another valuable aspect of AI.
+
+GenAI-Logic creates a dbml file from your model, which can be previewed as shown below:
+
+![data-model](images/data_model.png)
+
+<br>
 
 ## Contact
 
