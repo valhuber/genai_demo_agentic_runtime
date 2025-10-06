@@ -1,0 +1,256 @@
+
+# Probabilistic + Deterministic Rules: A Working Demo
+
+## The Challenge
+
+Agentic systems promise to transform enterprise software, but face a critical reliability challenge. As one skeptic put it: "Nobody wants a probabilistic payroll system."
+
+**Both sides are right.** We need AI's adaptive intelligence AND deterministic guarantees for compliance and reliability. This demo shows how they work together in a production architecture.
+
+## What is GenAI-Logic?
+
+**GenAI-Logic** is an open-source framework ([API Logic Server](https://github.com/ApiLogicServer/ApiLogicServer-src)) that generates enterprise applications from natural language prompts, then executes them using declarative business rules. It addresses what we call ["The Missing Half of GenAI"](https://medium.com/@valjhuber/the-missing-half-of-genai-and-why-microsofts-ceo-says-it-s-the-future-c6fc05d93640) - reliable, maintainable business logic that current AI code generation fails to produce.
+
+**Key capabilities:**
+- Generates complete applications (database, API, UI) from prompts via [WebGenAI](https://apifabric.ai/admin-app/)
+- Translates natural language requirements into declarative rules (40× more concise than procedural code)
+- Executes rules with automatic dependency management and O(1) performance through delta propagation
+- Extends naturally to integrate probabilistic AI decisions within deterministic guardrails
+
+This demo shows that last capability - how probabilistic and deterministic logic work together.
+
+## The Architecture: Two Uses of GenAI
+
+![Architecture](images/architecture-diagram.png)
+
+GenAI-Logic uses AI in two distinct ways:
+
+**1. GenAI Creates Deterministic Rules** (Design Time)
+- Natural language requirements → Declarative business rules
+- Example: "Customer balance is sum of unshipped orders" → `Rule.sum(...)`
+- Avoids the "FrankenCode" problem where AI generates unmaintainable procedural logic
+- Rules are Python DSL - readable, version-controlled, debuggable
+
+**2. GenAI Executes Probabilistic Decisions** (Runtime)
+- AI makes optimization decisions (supplier selection, dynamic pricing, predictions)
+- Operates within boundaries defined by deterministic rules
+- Every decision validated by existing business constraints
+- Full audit trail with AI reasoning captured
+
+## How It Works: The Demo
+
+### Starting Point: WebGenAI
+
+This project was created using [WebGenAI](https://apifabric.ai/admin-app/) - which generates a full-stack enterprise app from a natural language prompt in about a minute:
+
+![WebGenAI Prompt](images/webgenai-prompt.png)
+
+The prompt describes a customer/order system with business requirements. GenAI-Logic translates this into:
+- SQLite database with proper schema
+- JSON:API with Swagger documentation  
+- React Admin UI
+- Declarative business rules (see `logic/declare_logic.py`)
+
+**The generated rules handle the standard business logic:**
+```python
+# Customer balance = sum of unshipped order totals
+Rule.sum(derive=Customer.balance, as_sum_of=Order.amount_total,
+         where=lambda row: row.date_shipped is None)
+
+# Credit limit constraint
+Rule.constraint(validate=Customer,
+                as_condition=lambda row: row.balance <= row.credit_limit,
+                error_msg="Customer balance exceeds credit limit")
+```
+
+### Extension: Adding Probabilistic AI
+
+We extended this generated system to demonstrate PR/DR integration by adding:
+
+**1. Supplier selection tables** (`Supplier`, `ProductSupplier`, `SysSupplierReq`)
+
+**2. A deterministic rule that decides when to invoke AI:**
+```python
+def ItemUnitPriceFromSupplier(row: Item, old_row, logic_row):
+    if row.product.count_suppliers == 0:
+        return row.product.unit_price  # No AI needed - single source
+    
+    # Multiple suppliers - invoke AI for optimization
+    sys_supplier_req = logic_row.new_logic_row(SysSupplierReq)
+    sys_supplier_req.product_id = row.product_id
+    sys_supplier_req.insert()  # Triggers AI supplier selection
+    
+    return sys_supplier_req.chosen_unit_price
+
+Rule.formula(derive=Item.unit_price, calling=ItemUnitPriceFromSupplier)
+```
+
+**3. A probabilistic rule that calls OpenAI to choose suppliers:**
+```python
+def choose_supplier_for_item_with_ai(row: SysSupplierReq, old_row, logic_row):
+    # Call OpenAI API with supplier options and world conditions
+    # AI considers cost, lead time, and current events (e.g., Suez Canal)
+    chosen_supplier, reasoning = call_ai_service(row.product.ProductSupplierList)
+    
+    row.chosen_supplier_id = chosen_supplier.supplier_id
+    row.chosen_unit_price = chosen_supplier.unit_cost
+    row.reason = reasoning  # Audit trail
+    
+Rule.early_row_event(SysSupplierReq, calling=choose_supplier_for_item_with_ai)
+```
+
+### The Flow: What Actually Happens
+
+When you add an item to an order, here's the complete execution trace:
+
+![AI Logic Log](images/ai%20logic%20log.png)
+
+**Reading the log:**
+
+**Step 1: DR Decides** - `ItemUnitPriceFromSupplier()` checks if product has multiple suppliers. It does, so creates a `SysSupplierReq` to invoke AI.
+
+**Step 2: PR Executes** - OpenAI API call with context ("Suez Canal obstruction"). AI reasons: "Near East supplier has supply chain disruption, choose New Jersey supplier despite higher cost ($205 vs $105)."
+
+**Step 3: DR Cascades** - Deterministic rules automatically propagate:
+- Item.unit_price = 205.00
+- Item.amount = quantity × 205.00  
+- Order.amount_total adjusts (635 → 840)
+- Customer.balance adjusts (635 → 840)
+
+**Step 4: DR Validates** - Credit limit constraint automatically checks if new balance exceeds customer's credit limit. If violated, transaction rolls back with clear error message.
+
+### The Guardrail in Action
+
+To see the credit limit constraint reject an AI decision, try this:
+
+1. Set Customer credit_limit to 700
+2. Add an item - AI will select expensive supplier (pushing balance to 840)
+3. Transaction fails: "Customer balance exceeds credit limit"
+4. System can retry with cost-optimized AI parameters
+
+The key insight: **No special "AI safety code" was written.** The existing credit limit rule - created for human data entry - automatically governs AI decisions too.
+
+## Why This Matters vs. Other Approaches
+
+**Compared to LangChain/agent frameworks:**
+- **LangChain**: Great for orchestrating AI calls, but no built-in business logic engine. You'd write procedural code to validate decisions.
+- **GenAI-Logic**: Declarative rules provide automatic validation, cascading updates, and audit trails. The logic is reusable across all decision sources (human, AI, batch jobs).
+
+**Compared to Copilot-generated code:**
+- **Copilot**: Generates procedural code that's hard to maintain. Each validation is custom code scattered across your application.
+- **GenAI-Logic**: Rules are 40× more concise, automatically enforce dependencies, and adapt when requirements change. Change one rule, behavior updates everywhere.
+
+**Compared to traditional rule engines:**
+- **Rete engines**: Recalculate aggregates on every change (O(n) complexity). Performance degrades with data size.
+- **GenAI-Logic**: Delta propagation means O(1) updates regardless of data volume. 120× faster in real-world scenarios.
+
+## Try It Yourself
+
+### Prerequisites
+- Python 3.9+
+- OpenAI API key (for AI supplier selection) - set as `APILOGICSERVER_CHATGPT_APIKEY` environment variable
+- Or run without API key - system falls back to first available supplier
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/valhuber/genai_demo_agentic_runtime.git
+cd genai_demo_agentic_runtime
+
+# Install API Logic Server
+pip install ApiLogicServer
+
+# Run the project
+ApiLogicServer run
+```
+
+### Run the Demo
+
+1. **Start the server**: Press F5 in VSCode, or run `ApiLogicServer run`
+
+2. **Open the Admin UI**: Navigate to `http://localhost:5656`
+
+3. **Trigger the AI flow**:
+   - Navigate to Orders
+   - Select Order #2
+   - Add a new Item
+   - Choose Product #5 (which has multiple suppliers)
+   - Set quantity to 1
+   - Click Save
+
+4. **Watch the console**: You'll see the complete logic trace showing:
+   - DR deciding to invoke AI
+   - OpenAI API call with Suez Canal context
+   - AI reasoning and supplier choice
+   - DR cascade updating totals and balance
+   - DR validation of credit limit
+
+5. **View the audit trail**: Check the `SysSupplierReq` table to see the full AI reasoning captured
+
+### Experiment
+
+**Test the guardrails:**
+```python
+# In Admin UI, reduce Customer #2 credit_limit to 700
+# Then add an item - watch the transaction fail when AI chooses expensive supplier
+```
+
+**Change world conditions:**
+```python
+# Edit logic/declare_logic.py line 89:
+world_conditions = 'supplier strike in New Jersey'  # AI will choose different supplier
+```
+
+### Using Codespaces
+
+You can run this entirely in the cloud:
+
+1. Open this repository on GitHub
+2. Click "Code" → "Open with Codespaces"  
+3. Wait ~2 minutes for environment setup
+4. Press F5 to start the server
+5. Follow the demo steps above
+
+## Project Structure
+
+```
+genai_demo_agentic_runtime/
+├── database/
+│   ├── models.py          # SQLAlchemy models (generated)
+│   └── db.sqlite          # Database with sample data
+├── logic/
+│   └── declare_logic.py   # Business rules (DR + PR integration)
+├── ui/
+│   └── admin/             # React Admin app (generated)
+├── api/
+│   └── expose_api.py      # JSON:API endpoints (generated)
+└── images/
+    └── ai logic log.png   # Execution trace showing PR/DR flow
+```
+
+**Key files:**
+- `logic/declare_logic.py` - All business rules including AI integration
+- `database/models.py` - Data model including `SysSupplierReq` audit table
+- `readme_prob.md` - Detailed technical architecture documentation
+
+## For More Information
+
+**Articles:**
+- [The Missing Half of GenAI](https://medium.com/@valjhuber/the-missing-half-of-genai-and-why-microsofts-ceo-says-it-s-the-future-c6fc05d93640) - Why declarative logic matters
+- [Probabilistic + Deterministic Rules](https://medium.com/@valjhuber/probabilistic-deterministic-rules-engineering-reliability-into-agentic-systems) - Full architectural explanation
+
+**Documentation:**
+- [API Logic Server docs](https://apilogicserver.github.io/Docs/)
+- [Declarative rules reference](https://apilogicserver.github.io/Docs/Logic/)
+- [WebGenAI](https://apilogicserver.github.io/Docs/WebGenAI/)
+
+**Technical deep-dive:**
+- See `readme_prob.md` in this repository for detailed architecture, performance analysis, and implementation patterns
+
+## Contact
+
+Val Huber - Creator of GenAI-Logic
+- [LinkedIn](https://www.linkedin.com/in/valhuber/)
+- [Medium](https://medium.com/@valjhuber)
+- Email: val@apilogicserver.com
