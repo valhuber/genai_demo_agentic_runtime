@@ -3,7 +3,7 @@
 
 ## The Challenge
 
-Agentic systems promise to transform enterprise software, but face a critical reliability challenge. As one skeptic put it: "Nobody wants a probabilistic payroll system."
+Agentic systems promise to transform enterprise software, but face a critical reliability challenge. As one skeptic put it: "Nobody wants a probabilistic payroll system."  Check out the comments, [here](https://www.youtube.com/watch?v=uGOLYz2pgr8&t=463s).
 
 **Both sides are right.** We need AI's adaptive intelligence AND deterministic guarantees for compliance and reliability. This demo shows how they work together in a production architecture.
 
