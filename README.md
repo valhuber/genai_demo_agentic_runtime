@@ -85,7 +85,8 @@ We extended this generated system to demonstrate PR/DR integration by adding:
 **1. Supplier selection tables** (`Supplier`, `ProductSupplier`, `SysSupplierReq`)
 We did this using **Copilot vibe.**  That is not native to Copilot - ***GenAI-Logic provides learning*** for Copilot to use SQLAlchemy Alembic.  While the focus here is on logic, logic depends on the data model: iterations require data model iterations.  Historically, these have represented friction, even in prior systems that provided declarative rules.  Schema / model automation proved to be yet another valuable aspect of AI.
 
-**2. A deterministic rule that decides when to invoke AI:**
+**2. A deterministic rule that decides when to invoke AI:** - the relevant code is in `logic/logic_discovery/check_credit.py`:
+
 ```python
     def ItemUnitPriceFromSupplier(row: models.Item, old_row: models.Item, logic_row: LogicRow):
         """Deterministic rule decides when AI should run."""
