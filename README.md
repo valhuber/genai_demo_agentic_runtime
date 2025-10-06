@@ -127,6 +127,10 @@ Rule.early_row_event(SysSupplierReq, calling=choose_supplier_for_item_with_ai)
 
 ### How It Works: The Log Tells the Story
 
+Here is a sketch of the design (data model diagram created by GenAI-Logic - see Appendix 1):
+
+![logic_flow](images/logic_flow.png)
+
 When you add an item to a line item for an order (e.g. via the Admin App), the debug console shows exactly what happens:
 
 ![logic-log](images/ai%20logic%20log.png)
