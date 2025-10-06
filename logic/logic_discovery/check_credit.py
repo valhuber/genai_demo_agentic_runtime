@@ -72,7 +72,7 @@ def declare_logic():
         sys_supplier_req_logic_row.insert(reason="Supplier Svc Request ", row=sys_supplier_req)  # triggers rules...
         return sys_supplier_req.chosen_unit_price
 
-    Rule.formula(derive=models.Item.unit_price, calling=ItemUnitPriceFromSupplier)
+    Rule.formula(derive=models.Item.unit_price, calling=ItemUnitPriceFromSupplier)   # invokes the function above
 
 
     def choose_supplier_for_item_with_ai(row: models.SysSupplierReq, old_row: models.SysSupplierReq, logic_row: LogicRow):

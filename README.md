@@ -85,7 +85,7 @@ We extended this generated system to demonstrate PR/DR integration by adding:
 **1. Supplier selection tables** (`Supplier`, `ProductSupplier`, `SysSupplierReq`)
 We did this using **Copilot vibe.**  That is not native to Copilot - ***GenAI-Logic provides learning*** for Copilot to use SQLAlchemy Alembic.  While the focus here is on logic, logic depends on the data model: iterations require data model iterations.  Historically, these have represented friction, even in prior systems that provided declarative rules.  Schema / model automation proved to be yet another valuable aspect of AI.
 
-**2. A deterministic rule that decides when to invoke AI:** - the relevant code is in `logic/logic_discovery/check_credit.py`:
+**2. A deterministic rule that decides when to invoke AI:** - the relevant code is in `logic/logic_discovery/check_credit.py`.  We replaced the simple `Item.unit_price` rule expression with a rule function:
 
 ```python
     def ItemUnitPriceFromSupplier(row: models.Item, old_row: models.Item, logic_row: LogicRow):
@@ -104,7 +104,7 @@ We did this using **Copilot vibe.**  That is not native to Copilot - ***GenAI-Lo
         sys_supplier_req_logic_row.insert(reason="Supplier Svc Request ", row=sys_supplier_req)  # triggers rules...
         return sys_supplier_req.chosen_unit_price
 
-Rule.formula(derive=Item.unit_price, calling=ItemUnitPriceFromSupplier)
+Rule.formula(derive=Item.unit_price, calling=ItemUnitPriceFromSupplier)  # invokes the function above
 ```
 
 **3. A probabilistic rule that calls OpenAI to choose suppliers:**
@@ -128,7 +128,7 @@ Rule.early_row_event(SysSupplierReq, calling=choose_supplier_for_item_with_ai)
 
 ### How It Works: The Log Tells the Story
 
-When you add an item to a line item for an order, the debug console shows exactly what happens:
+When you add an item to a line item for an order (e.g. via the Admin App), the debug console shows exactly what happens:
 
 ![logic-log](images/ai%20logic%20log.png)
 
@@ -167,6 +167,11 @@ HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
 <br>
 
 **Step 4: Guardrails Validate** - Credit limit constraint automatically checks if the AI's choice would violate business rules. If it does, the transaction fails with a clear error.
+
+<br>
+
+**Step 5: Audit** - The request object (`models.SysSupplierReq`) is persisted to the database, containing the prompt, result and reason.  See the screen shot below.
+
 
 <br>
 
