@@ -49,7 +49,7 @@ DR creation has been the most common usage.  This demo explores PR, used with DR
 
 ## How It Works: The Demo
 
-### 1. Initial Creation: WebGenAI prompt
+### I. Initial Creation: WebGenAI prompt
 
 This project was created using [WebGenAI](https://apifabric.ai/admin-app/) - which generates a full-stack enterprise app from a natural language prompt in about a minute:
 
@@ -57,9 +57,9 @@ This project was created using [WebGenAI](https://apifabric.ai/admin-app/) - whi
 
 **The prompt** (shown above) describes business requirements in natural language. GenAI-Logic translates this into a running system:
 
-1. *Declarative business rules* - 40× more concise than procedural code. For the rationale, see ["The Missing Half of GenAI"](https://medium.com/@valjhuber/the-missing-half-of-genai-and-why-microsofts-ceo-says-it-s-the-future-c6fc05d93640).
-2. *A multi-table API* that enforces the logic
-3. *A multi-table Admin App* to browse and update your data (add custom apps using vibe, such as copilot)
+1. *Declarative business rules,* 40× more concise than procedural code. For the rationale, see ["The Missing Half of GenAI"](https://medium.com/@valjhuber/the-missing-half-of-genai-and-why-microsofts-ceo-says-it-s-the-future-c6fc05d93640).
+2. *A multi-table API* that enforces the logic.
+3. *A multi-table Admin App* to browse and update your data (add custom apps using vibe, such as copilot).
 
 For more on *system vibe*, [click here](https://medium.com/@valjhuber/vibe-with-copilot-and-genai-logic-925894574125).
 
@@ -76,7 +76,9 @@ Rule.constraint(validate=Customer,
                 error_msg="Customer balance exceeds credit limit")
 ```
 
-### 2. Extension: Adding Probabilistic AI
+<br>
+
+### II. Extension: Adding Probabilistic AI
 
 We extended this generated system to demonstrate PR/DR integration by adding:
 
