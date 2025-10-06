@@ -5,19 +5,23 @@
 
 Agentic systems promise to transform enterprise software, but face a critical reliability challenge. As one skeptic put it: "Nobody wants a probabilistic payroll system."  Check out the comments, [here](https://www.youtube.com/watch?v=uGOLYz2pgr8&t=463s).
 
-**Both sides are right.** We need AI's adaptive intelligence AND deterministic guarantees for compliance and reliability. This demo shows how they work together in a production architecture.
+> **Both sides are right.** We need AI's adaptive intelligence (**PR:** Probabalistic Rules) AND deterministic guarantees (**DR:** Deterministic Rules) for compliance and reliability. This demo shows how they work together in a production architecture.
+
+<br>
 
 ## What is GenAI-Logic?
 
-**GenAI-Logic** is an open-source framework ([API Logic Server](https://github.com/ApiLogicServer/ApiLogicServer-src)) that generates enterprise applications from natural language prompts, then executes them using declarative business rules. It addresses what we call ["The Missing Half of GenAI"](https://medium.com/@valjhuber/the-missing-half-of-genai-and-why-microsofts-ceo-says-it-s-the-future-c6fc05d93640) - reliable, maintainable business logic that current AI code generation fails to produce.
+**[GenAI-Logic](genai-logic.com)** is an open-source framework ([GitHub](https://github.com/ApiLogicServer/ApiLogicServer-src)) that generates enterprise applications from natural language prompts, then executes them using declarative business rules. It addresses what we call ["The Missing Half of GenAI"](https://medium.com/@valjhuber/the-missing-half-of-genai-and-why-microsofts-ceo-says-it-s-the-future-c6fc05d93640) - reliable, maintainable business logic that current AI code generation fails to produce.
 
 **Key capabilities:**
-- Generates complete applications (database, API, UI) from prompts via [WebGenAI](https://apifabric.ai/admin-app/)
+- Generates complete applications (database, API, UI) from prompts, from either [WebGenAI](https://apifabric.ai/admin-app/) or [Copilot vibe](https://medium.com/@valjhuber/vibe-with-copilot-and-genai-logic-925894574125); you can also generate systems from existing databases (e.g. for [MCP](https://medium.com/@valjhuber/vibe-an-mcp-server-declarative-genai-logic-dec16719c004))
 - Translates natural language requirements into declarative rules (40× more concise than procedural code)
-- Executes rules with automatic dependency management and O(1) performance through delta propagation
+- Executes rules using its (non RETE) declarative rules engine, providing automatic dependency management and [Enterprise-class O(1) performance](https://medium.com/@valjhuber/living-with-logic-7e202782d0c5) through delta propagation 
 - Extends naturally to integrate probabilistic AI decisions within deterministic guardrails
 
 This demo shows that last capability - how probabilistic and deterministic logic work together.
+
+<br>
 
 ## Two Uses of GenAI
 
@@ -34,6 +38,8 @@ GenAI-Logic uses AI in two distinct ways:
 - Operates within boundaries defined by deterministic rules
 - Every decision validated by existing business constraints
 - Full audit trail with AI reasoning captured
+
+<br>
 
 ## How It Works: The Demo
 
@@ -69,6 +75,7 @@ Rule.constraint(validate=Customer,
 We extended this generated system to demonstrate PR/DR integration by adding:
 
 **1. Supplier selection tables** (`Supplier`, `ProductSupplier`, `SysSupplierReq`)
+We did this using Copilot vibe.  That is not native to Copilot - GenAI-Logic provides ***learning*** for Copilot to use SQLAlchemy Alembic.  While the focus here is on logic, logic depends on the data model: iterations require data model iterations.  Historically, these have represented friction, even in prior systems that provided declarative rules.
 
 **2. A deterministic rule that decides when to invoke AI:**
 ```python
@@ -181,8 +188,8 @@ The use of the request objects means we have a database row for each AI call.  A
 - **LangChain**: Great for orchestrating AI calls, but no built-in business logic engine. You'd write procedural code to validate decisions.
 - **GenAI-Logic**: Declarative rules provide automatic validation, cascading updates, and audit trails. The logic is reusable across all decision sources (human, AI, batch jobs).
 
-**Compared to Copilot-generated code:**
-- ***"Plain"* Procedural GenAI**: Generates procedural code that's hard to maintain. Each validation is custom code scattered across your application.  And it's buggy - AI is known to struggle with complex dependencies.
+**Compared to AI-generated code:**
+- ***Procedural GenAI**: Without GenAI-Logic, AI generates procedural code that's hard to maintain. Each derivations and validation is custom code scattered across your application.  And it's buggy - AI is known to struggle with complex dependencies.
 - **GenAI-Logic**: Rules are 40× more concise, automatically enforce dependencies, and adapt when requirements change. Change one rule, behavior updates everywhere.
 
 ![decl-genai](images/decl-genai.png)
