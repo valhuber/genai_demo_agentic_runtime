@@ -216,7 +216,7 @@ The use of the request objects means we have a database row for each AI call.  A
 ## Try It Yourself
 
 ### Prerequisites
-- Python 3.9+
+- Python 3.10+
 - OpenAI API key (for AI supplier selection) - set as `APILOGICSERVER_CHATGPT_APIKEY` environment variable
 - Or run without API key - system falls back to first available supplier
 
