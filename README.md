@@ -18,7 +18,7 @@ To understand the demo, you will need a basic understanding of GenAI-Logic.
 **[GenAI-Logic](genai-logic.com)** is an open-source framework ([GitHub](https://github.com/ApiLogicServer/ApiLogicServer-src)) that **generates enterprise applications from natural language prompts,** then executes them using declarative business rules. It addresses what we call ["The Missing Half of GenAI"](https://medium.com/@valjhuber/the-missing-half-of-genai-and-why-microsofts-ceo-says-it-s-the-future-c6fc05d93640) - reliable, maintainable business logic that current AI code generation fails to produce.
 
 **Key capabilities:**
-- Generates complete applications (database, API, UI) from prompts, from either [WebGenAI](https://apifabric.ai/admin-app/) or [Copilot vibe](https://medium.com/@valjhuber/vibe-with-copilot-and-genai-logic-925894574125); you can also generate systems from existing databases (e.g. for [MCP](https://medium.com/@valjhuber/vibe-an-mcp-server-declarative-genai-logic-dec16719c004))
+- Generates complete applications (database, API, UI) from prompts, from either [WebGenAI](https://apifabric.ai/admin-app/) (a web app, shown below), or [Copilot vibe](https://medium.com/@valjhuber/vibe-with-copilot-and-genai-logic-925894574125); you can also generate systems from existing databases (e.g. for [MCP](https://medium.com/@valjhuber/vibe-an-mcp-server-declarative-genai-logic-dec16719c004))
 - Translates natural language requirements into declarative rules (40× more concise than procedural code)
 - Executes rules using its (non RETE) declarative rules engine, providing automatic dependency management and [Enterprise-class O(1) performance](https://medium.com/@valjhuber/living-with-logic-7e202782d0c5) through delta propagation 
 - Extends naturally to integrate probabilistic AI decisions within deterministic guardrails
@@ -57,11 +57,11 @@ This project was created using [WebGenAI](https://apifabric.ai/admin-app/) - whi
 
 **The prompt** (shown above) describes business requirements in natural language. GenAI-Logic translates this into a running system:
 
-1. **declarative business rules** - 40× more concise than procedural code. For the rationale, see ["The Missing Half of GenAI"](https://medium.com/@valjhuber/the-missing-half-of-genai-and-why-microsofts-ceo-says-it-s-the-future-c6fc05d93640).
-2. A multi-table API that enforces the logic
-3. An multi-table Admin App to browse and update your data.
+1. *Declarative business rules* - 40× more concise than procedural code. For the rationale, see ["The Missing Half of GenAI"](https://medium.com/@valjhuber/the-missing-half-of-genai-and-why-microsofts-ceo-says-it-s-the-future-c6fc05d93640).
+2. *A multi-table API* that enforces the logic
+3. *A multi-table Admin App* to browse and update your data (add custom apps using vibe, such as copilot)
 
-For more on *system vibe*, [click here](https://medium.com/@valjhuber/vibe-with-copilot-and-genai-logic-925894574125)
+For more on *system vibe*, [click here](https://medium.com/@valjhuber/vibe-with-copilot-and-genai-logic-925894574125).
 
 
 **The generated rules handle the standard business logic:**
