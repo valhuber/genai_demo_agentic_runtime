@@ -9,7 +9,11 @@ Agentic systems promise to transform enterprise software, but face a critical re
 
 <br>
 
-## What is GenAI-Logic?
+## Background: GenAI-Logic
+
+To understand the demo, you will need a basic understanding of GenAI-Logic.
+
+### What is GenAI-Logic?
 
 **[GenAI-Logic](genai-logic.com)** is an open-source framework ([GitHub](https://github.com/ApiLogicServer/ApiLogicServer-src)) that generates enterprise applications from natural language prompts, then executes them using declarative business rules. It addresses what we call ["The Missing Half of GenAI"](https://medium.com/@valjhuber/the-missing-half-of-genai-and-why-microsofts-ceo-says-it-s-the-future-c6fc05d93640) - reliable, maintainable business logic that current AI code generation fails to produce.
 
@@ -23,7 +27,7 @@ This demo shows that last capability - how probabilistic and deterministic logic
 
 <br>
 
-## Two Uses of GenAI
+### Two Uses of GenAI
 
 GenAI-Logic uses AI in two distinct ways:
 
@@ -75,7 +79,7 @@ Rule.constraint(validate=Customer,
 We extended this generated system to demonstrate PR/DR integration by adding:
 
 **1. Supplier selection tables** (`Supplier`, `ProductSupplier`, `SysSupplierReq`)
-We did this using Copilot vibe.  That is not native to Copilot - GenAI-Logic provides ***learning*** for Copilot to use SQLAlchemy Alembic.  While the focus here is on logic, logic depends on the data model: iterations require data model iterations.  Historically, these have represented friction, even in prior systems that provided declarative rules.
+We did this using **Copilot vibe.**  That is not native to Copilot - ***GenAI-Logic provides learning*** for Copilot to use SQLAlchemy Alembic.  While the focus here is on logic, logic depends on the data model: iterations require data model iterations.  Historically, these have represented friction, even in prior systems that provided declarative rules.  Schema / model automation proved to be yet another valuable aspect of AI.
 
 **2. A deterministic rule that decides when to invoke AI:**
 ```python
