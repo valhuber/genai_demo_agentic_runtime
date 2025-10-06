@@ -28,7 +28,7 @@ For more on *system vibe*, [click here](https://medium.com/@valjhuber/vibe-with-
 
 <br>
 
-## How It Works: The Log Tells the Story
+### How It Works: The Log Tells the Story
 
 When you add an item to a line item for an order, the debug console shows exactly what happens:
 

@@ -43,13 +43,16 @@ GenAI-Logic uses AI in two distinct ways:
 
 This project was created using [WebGenAI](https://apifabric.ai/admin-app/) - which generates a full-stack enterprise app from a natural language prompt in about a minute:
 
-![WebGenAI Prompt](images/webgenai-prompt.png)
+![WebGenAI prompt showing business requirements](images/genai-prompt-7.png)
 
-The prompt describes a customer/order system with business requirements. GenAI-Logic translates this into:
-- SQLite database with proper schema
-- JSON:API with Swagger documentation  
-- React Admin UI
-- Declarative business rules (see `logic/declare_logic.py`)
+**The prompt** (shown above) describes business requirements in natural language. GenAI-Logic translates this into a running system:
+
+1. **declarative business rules** - 40× more concise than procedural code. For the rationale, see ["The Missing Half of GenAI"](https://medium.com/@valjhuber/the-missing-half-of-genai-and-why-microsofts-ceo-says-it-s-the-future-c6fc05d93640).
+2. A multi-table API that enforces the logic
+3. An multi-table Admin App to browse and update your data.
+
+For more on *system vibe*, [click here](https://medium.com/@valjhuber/vibe-with-copilot-and-genai-logic-925894574125)
+
 
 **The generated rules handle the standard business logic:**
 ```python
@@ -99,25 +102,49 @@ def choose_supplier_for_item_with_ai(row: SysSupplierReq, old_row, logic_row):
 Rule.early_row_event(SysSupplierReq, calling=choose_supplier_for_item_with_ai)
 ```
 
-### The Flow: What Actually Happens
+### How It Works: The Log Tells the Story
 
-When you add an item to an order, here's the complete execution trace:
+When you add an item to a line item for an order, the debug console shows exactly what happens:
 
-![AI Logic Log](images/ai%20logic%20log.png)
+![logic-log](images/ai%20logic%20log.png)
 
-**Reading the log:**
+**Step 1: Deterministic Rule Decides** - Does this product have multiple suppliers? If yes, invoke AI:
+```
+..Item[None] {Formula ItemUnitPriceFromSupplier(): use AI to compute unit_price by inserting SysSupplierReq
+```
 
-**Step 1: DR Decides** - `ItemUnitPriceFromSupplier()` checks if product has multiple suppliers. It does, so creates a `SysSupplierReq` to invoke AI.
+<br>
 
-**Step 2: PR Executes** - OpenAI API call with context ("Suez Canal obstruction"). AI reasons: "Near East supplier has supply chain disruption, choose New Jersey supplier despite higher cost ($205 vs $105)."
+**Step 2: AI Reasons Probabilistically** - Given world conditions (Suez Canal blocked), AI chooses New Jersey supplier ($205) over Near East supplier ($105) for faster delivery:
 
-**Step 3: DR Cascades** - Deterministic rules automatically propagate:
-- Item.unit_price = 205.00
-- Item.amount = quantity × 205.00  
-- Order.amount_total adjusts (635 → 840)
-- Customer.balance adjusts (635 → 840)
+```
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
 
-**Step 4: DR Validates** - Credit limit constraint automatically checks if new balance exceeds customer's credit limit. If violated, transaction rolls back with clear error message.
+......SysSupplierReq[None] {Chosen supplier 2 with reason 'The Suez Canal obstruction 
+      significantly impacts lead time from Near East suppliers. Choosing a supplier 
+      from New Jersey ensures quicker and more reliable delivery despite a higher 
+      unit cost.' for SysSupplierReq None}
+```
+
+
+<br>
+
+**Step 3: Deterministic Rules Cascade** - Item amount → Order total → Customer balance (automatically adjusted):
+
+```
+..Item[None] {Formula unit_price} unit_price: 205.00
+..Item[None] {Formula amount} amount: 205.00
+
+....Order[2] {Update - Adjusting order: amount_total} [635.00 --> 840.00]
+
+......Customer[2] {Update - Adjusting customer: balance} [635.00 --> 840.00]
+```
+
+<br>
+
+**Step 4: Guardrails Validate** - Credit limit constraint automatically checks if the AI's choice would violate business rules. If it does, the transaction fails with a clear error.
+
+<br>
 
 ### The Guardrail in Action
 
