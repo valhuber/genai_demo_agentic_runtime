@@ -27,21 +27,23 @@ This demo shows that last capability - how probabilistic and deterministic logic
 
 <br>
 
-### Two Uses of GenAI
+### GenAI-Logic Uses GenAI for *Creation* and *Execution*
 
 GenAI-Logic uses AI in two distinct ways:
 
-**1. GenAI *Creates* Deterministic Rules** (Design Time)
+**1. GenAI *Creates* DR (Deterministic Rules)** (Design Time)
 - Natural language requirements → Declarative business rules
 - Example: "Customer balance is sum of unshipped orders" → `Rule.sum(...)`
 - Avoids the "FrankenCode" problem where AI generates unmaintainable procedural logic
 - Rules are Python DSL - readable, version-controlled, debuggable
 
-**2. GenAI *Executes* Probabilistic Decisions** (Runtime)
+**2. GenAI *Executes* PR (Probabilistic Decision Rules)** (Runtime)
 - AI makes optimization decisions (supplier selection, dynamic pricing, predictions)
 - Operates within boundaries defined by deterministic rules
 - Every decision validated by existing business constraints
 - Full audit trail with AI reasoning captured
+
+DR creation has been the most common usage.  This demo explores PR, used with DR.
 
 <br>
 
