@@ -163,7 +163,7 @@ To see the credit limit constraint reject an AI decision, try this:
 3. Transaction fails: "Customer balance exceeds credit limit"
 4. System can retry with cost-optimized AI parameters
 
-The key insight: **No special "AI safety code" was written.** The existing credit limit rule - created for
+The key insight: **No special "AI safety code" was written.** The existing credit limit rule - created in the initial WebGenAI creation - now also governs PR.
 
 <br>
 
@@ -182,8 +182,10 @@ The use of the request objects means we have a database row for each AI call.  A
 - **GenAI-Logic**: Declarative rules provide automatic validation, cascading updates, and audit trails. The logic is reusable across all decision sources (human, AI, batch jobs).
 
 **Compared to Copilot-generated code:**
-- ***"Plain"* GenAI**: Generates procedural code that's hard to maintain. Each validation is custom code scattered across your application.  And it's buggy - AI is known to struggle with complex dependencies.
+- ***"Plain"* Procedural GenAI**: Generates procedural code that's hard to maintain. Each validation is custom code scattered across your application.  And it's buggy - AI is known to struggle with complex dependencies.
 - **GenAI-Logic**: Rules are 40× more concise, automatically enforce dependencies, and adapt when requirements change. Change one rule, behavior updates everywhere.
+
+[decl-genai](images/decl-genai.png)
 
 **Compared to traditional rule engines:**
 - **Rete engines**: Recalculate aggregates on every change (O(n) complexity). Performance degrades with data size.
