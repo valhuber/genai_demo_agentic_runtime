@@ -112,13 +112,14 @@ The `sys_supplier_req_logic_row.insert` is a common logic pattern (the [request 
 
 ```python
 def choose_supplier_for_item_with_ai(row: SysSupplierReq, old_row, logic_row):
-    # Call OpenAI API with supplier options and world conditions
-    # AI considers cost, lead time, and current events (e.g., Suez Canal)
-    chosen_supplier, reasoning = call_ai_service(row.product.ProductSupplierList)
-    
-    row.chosen_supplier_id = chosen_supplier.supplier_id
-    row.chosen_unit_price = chosen_supplier.unit_cost
-    row.reason = reasoning  # Audit trail
+        if logic_row.is_inserted():
+            # Call AI service to choose supplier based on request and top_n
+            supplier_options = get_supplier_options(row=row)
+            chosen_supplier, reason, request = call_ai_service_to_choose_supplier(supplier_options)
+            row.chosen_supplier_id = chosen_supplier.supplier_id
+            row.chosen_unit_price = chosen_supplier.unit_cost
+            row.request = request
+            row.reason = reason  # audit trail for governance
     
 Rule.early_row_event(SysSupplierReq, calling=choose_supplier_for_item_with_ai)
 ```

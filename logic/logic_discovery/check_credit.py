@@ -61,14 +61,15 @@ def declare_logic():
         if row.product.count_suppliers == 0:
             logic_row.debug(f"Item {row.id} - Product not from supplier")
             return row.product.unit_price  # No change if no supplier
-        # #als: triggered inserts - https://apilogicserver.github.io/Docs/Logic-Use/#in-logic
+        # triggered inserts - https://apilogicserver.github.io/Docs/Logic-Use/#in-logic
         logic_row.log(f"Formula ItemUnitPriceFromSupplier(): use AI to compute unit_price by inserting SysSupplierReq (request pattern) to choose supplier")
         sys_supplier_req_logic_row : models.SysSupplierReq = logic_row.new_logic_row(models.SysSupplierReq)
         sys_supplier_req = sys_supplier_req_logic_row.row
         sys_supplier_req_logic_row.link(to_parent=logic_row)
         sys_supplier_req.product_id = row.product_id
         sys_supplier_req.item_id = row.id
-        # this calls choose_supplier_for_item_with_ai, which sets chosen_supplier_id and chosen_unit_price
+        # this calls choose_supplier_for_item_with_ai, 
+        #      which sets chosen_supplier_id and chosen_unit_price
         sys_supplier_req_logic_row.insert(reason="Supplier Svc Request ", row=sys_supplier_req)  # triggers rules...
         return sys_supplier_req.chosen_unit_price
 
@@ -129,23 +130,26 @@ def declare_logic():
                 return_supplier = suppliers[0]
             return return_supplier, reasoning, request
         
-        
+        def get_supplier_options(row: models.SysSupplierReq) -> list[models.ProductSupplier]:
+            # Gather supplier options for the given SysSupplierReq
+            supplier_options = []
+            if row.product and row.product.ProductSupplierList:
+                for each_supplier in row.product.ProductSupplierList:
+                    # Add supplier with region info to the suppliers list
+                    supplier_with_region = each_supplier
+                    supplier_with_region.region = each_supplier.supplier.region if hasattr(each_supplier.supplier, 'region') else None
+                    supplier_options.append(supplier_with_region)
+                    logic_row.log(f"SysSupplierReq {row.id} has supplier candidate {each_supplier.supplier_id} ")
+            return supplier_options
+
         if logic_row.is_inserted():
             # Call AI service to choose supplier based on request and top_n
-            # For demonstration, we'll just pick the first from top_n if available
-            suppliers = [] # ProductSupplier rows, plus the supplier.region
-            chosen_supplier = None
-            for each_supplier in row.product.ProductSupplierList:
-                # Add supplier with region info to the suppliers list
-                supplier_with_region = each_supplier
-                supplier_with_region.region = each_supplier.supplier.region if hasattr(each_supplier.supplier, 'region') else None
-                suppliers.append(supplier_with_region)
-                # logic_row.log(f"SysSupplierReq {row.id} has supplier candidate {each_supplier.supplier_id} ")
-            chosen_supplier, reason, request = call_ai_service_to_choose_supplier(suppliers)
+            supplier_options = get_supplier_options(row=row)
+            chosen_supplier, reason, request = call_ai_service_to_choose_supplier(supplier_options)
             row.chosen_supplier_id = chosen_supplier.supplier_id
             row.chosen_unit_price = chosen_supplier.unit_cost
             row.request = request
-            row.reason = reason  # might start with "Failed to ..."
+            row.reason = reason  # audit trail for governance
             logic_row.log(f"Chosen supplier {row.chosen_supplier_id} with reason '{reason}' for SysSupplierReq {row.id}")
 
     Rule.early_row_event(models.SysSupplierReq, calling=choose_supplier_for_item_with_ai)
