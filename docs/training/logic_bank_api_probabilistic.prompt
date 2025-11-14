@@ -209,24 +209,112 @@ If AI's choice violates constraints, transaction rolls back - no special code ne
 
 Common Patterns:
 
-1. Request Pattern (Recommended):
-   Create a SysXxxReq table to capture AI requests/responses for audit:
-   - Stores: request, reasoning, chosen_id, created_on
-   - Benefits: Complete audit trail, governance, debugging
-   - Example: SysSupplierReq, SysPricingReq, SysRouteReq
+1. Request Pattern (Required):
+   ALWAYS create a SysXxxReq table to capture AI requests/responses for audit.
+   This is mandatory for governance, explainability, and debugging.
+   
+   Convention - Sys{Domain}Req table structure:
+   - Name: Sys{Domain}Req (e.g., SysSupplierReq, SysPricingReq, SysRouteReq)
+   - chosen_{domain}_id: FK to selected entity (e.g., chosen_supplier_id)
+   - request: String(2000) - full AI prompt sent
+   - reason: String(500) - AI's explanation
+   - created_on: DateTime - timestamp
+   - Context FKs: Links to triggering entities (e.g., item_id, product_id)
+   
+   Table Generation Logic:
+   a) Check if Sys{Domain}Req exists in database/models.py
+   b) If exists and matches convention → Use it
+   c) If exists but wrong structure → ERROR with clear message
+   d) If doesn't exist → Create it with standard structure
+   e) Generate Alembic migration if table created
+   
+   Error Handling for Mismatched Tables:
+   If SysXxxReq exists but doesn't match convention, FAIL with:
+   
+   "Error: Cannot implement AI logic. SysXxxReq table exists but doesn't match required convention.
+   
+   Expected fields: chosen_xxx_id, request, reason, created_on
+   Found fields: [list actual fields]
+   
+   Resolution options:
+   1. Rename existing table fields to match convention
+   2. Specify different table name: [store in MyCustomAudit]
+   3. Drop existing SysXxxReq table
+   
+   Please fix and re-run your request."
+   
+   Benefits: Complete audit trail, governance, debugging, reproducibility
 
-2. Direct Pattern (Simpler):
-   Store AI choice directly in target table with reasoning column:
-   - Simpler schema, faster
-   - Less comprehensive audit trail
-   - Good for non-critical decisions
+2. Test Context from Config:
+   Support testing and demos via config/config.py:
+   
+   class Config:
+       # AI Testing Context (set to None for production)
+       AI_WORLD_CONDITIONS = 'ship aground in Suez Canal'
+       AI_MARKET_CONDITIONS = None
+       AI_TRAFFIC_CONDITIONS = None
+   
+   Usage in generated code:
+   from config import config
+   
+   world_conditions = config.Config.AI_WORLD_CONDITIONS or 'normal operations'
+   considering={'world_conditions': world_conditions, ...}
+   
+   This enables:
+   - Reproducible testing
+   - Demo scenarios without code changes
+   - Version-controlled test conditions
+   - Easy toggle between test/production
 
-3. Fallback Handling:
-   Always provide sensible fallback when API unavailable:
-   - First candidate (default behavior)
-   - Lowest cost option
-   - Closest geographic match
-   - Previous successful choice
+3. Fallback Strategy (API Key Missing):
+   Always provide graceful degradation when OpenAI unavailable.
+   
+   Infer fallback from user's optimization criteria:
+   - "optimize for cost" → fallback to min(candidates, key=lambda c: c['cost'])
+   - "optimize for speed/time" → fallback to min(candidates, key=lambda c: c['lead_time'])
+   - "optimize for reliability" → fallback to max(candidates, key=lambda c: c['rating'])
+   - No optimization specified → fallback to candidates[0] (first available)
+   
+   Generated pattern:
+   api_key = os.getenv("APILOGICSERVER_CHATGPT_APIKEY")
+   if not api_key:
+       reasoning = "Fallback: no API key available, using [inferred strategy]"
+       chosen = [apply inferred fallback logic]
+       row.reason = reasoning
+       return chosen
+   
+   Store fallback reasoning in audit trail for transparency.
+
+4. Scope Validation:
+   Probabilistic rules are for VALUE COMPUTATION and SELECTION.
+   
+   Valid patterns:
+   ✅ "choose/select X from Y based on Z"
+   ✅ "compute/calculate/set X considering Y"
+   ✅ "determine X by evaluating Y options"
+   
+   Invalid patterns (MUST ERROR):
+   ❌ "ensure X is Y" (enforcement, not computation)
+   ❌ "make X happen" (action, not decision)
+   ❌ "predict X" (without selection context)
+   ❌ "guarantee X" (too vague/subjective)
+   
+   Error for invalid requests:
+   "Error: Cannot implement '[requirement]'
+   
+   Reason: This is not a computable value or selection decision.
+   
+   Probabilistic rules can:
+   ✅ Select from concrete candidates (suppliers, routes, prices)
+   ✅ Choose based on measurable factors (cost, time, distance)
+   ✅ Compute specific values (price, quantity, score)
+   
+   They cannot:
+   ❌ Ensure subjective states ('happy', 'satisfied')
+   ❌ Make open-ended predictions without candidates
+   ❌ Enforce unmeasurable qualities
+   
+   Please reformulate as a selection or computation."
 
 
 Error Handling:

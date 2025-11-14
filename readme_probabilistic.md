@@ -4,9 +4,10 @@ notes: Describes how to use Rule.ai_decision() via natural language with Copilot
 target: Complete working system from single prompt via 'als genai create'
 source: docs/training/logic_bank_api_probabilistic.prompt (the Rosetta Stone for PR)
 related: readme_ai_mcp.md, README.md, docs/training/logic_bank_api.prompt
-version: 1.2
+version: 1.3
 date: Nov 13, 2025
 changelog:
+  - 1.3 (Nov 13, 2025) - Added Scenario 2: brownfield demo with complete prompt
   - 1.2 (Nov 13, 2025) - Added TARGET: complete working system from one prompt
   - 1.1 (Nov 13, 2025) - Clarified as "value computation" vs "decision", added appendix on request object inference
   - 1.0 (Nov 13, 2025) - Initial creation of PR Rosetta Stone and user guide
@@ -14,9 +15,158 @@ changelog:
 
 # Probabilistic Rules: Natural Language → AI Value Computation
 
+## Two Demo Scenarios
+
+### Scenario 1: From Nothing (Greenfield)
+
+`als genai create` generates **complete working system** from one prompt - see "The Target" section below.
+
+### Scenario 2: From Existing DB (Brownfield) 
+
+**Starting Point:** Existing system with Customer, Order, Item, Product, Supplier, ProductSupplier tables.
+
+**User gives Copilot this complete prompt:**
+
+```text
+I have an existing order management system. Please implement Check Credit logic 
+using LogicBank declarative rules in logic/logic_discovery/check_credit.py:
+
+1. Constraint: Customer balance must not exceed credit_limit
+2. Customer balance is sum of unshipped Order amount_total (date_shipped is null)
+3. Order amount_total is sum of Item amounts
+4. Item amount is quantity * unit_price
+5. Item unit_price: 
+   - IF Product has suppliers (Product.count_suppliers > 0), 
+     use AI to select optimal supplier based on cost, lead time, and world conditions
+     [store in SysSupplierReq]
+   - ELSE copy from Product.unit_price
+```
+
+**Copilot generates:** Complete working implementation including:
+- ✅ All deterministic rules (constraint, sum, formula, copy)
+- ✅ Product.count_suppliers count rule
+- ✅ **SysSupplierReq audit table** (if doesn't exist matching convention)
+- ✅ **Alembic migration** to create the table
+- ✅ Conditional formula with IF/ELSE logic
+- ✅ SysSupplierReq request pattern with insert
+- ✅ AI event handler calling OpenAI
+- ✅ Relationship navigation to ProductSupplierList
+- ✅ Error handling and fallback logic
+
+**Convention for AI Audit Tables:**
+
+When user specifies `[store in SysXxxReq]`, Copilot will:
+
+1. **Check if table exists** in models.py matching standard pattern:
+   - `chosen_xxx_id` (FK to selected entity)
+   - `request` (String 2000) - full AI prompt
+   - `reason` (String 500) - AI explanation
+   - `created_on` (DateTime) - timestamp
+   - Context FKs (e.g., `item_id`, `product_id`)
+
+2. **If table exists and matches** → Use it (generate logic only)
+
+3. **If table doesn't exist** → Create it with standard structure + migration
+
+4. **If table exists but doesn't match** → **ERROR - entire request fails:**
+   ```
+   Error: SysXxxReq exists but doesn't match required convention.
+   
+   Expected: chosen_xxx_id, request, reason, created_on
+   Found: [actual fields]
+   
+   Options:
+   1. Rename fields to match convention (recommended)
+   2. Use different table: [store in MyCustomAudit]
+   3. Drop existing SysXxxReq table
+   ```
+   No logic generated until resolved - fail fast and clearly.
+
+**Testing & Demo Support:**
+
+Add to `config/config.py` for test scenarios:
+```python
+class Config:
+    # AI Testing Context (set to None for production)
+    AI_WORLD_CONDITIONS = 'ship aground in Suez Canal'
+    AI_MARKET_CONDITIONS = None
+    AI_TRAFFIC_CONDITIONS = None
+```
+
+Copilot generates code that uses:
+```python
+from config import config
+world_conditions = config.Config.AI_WORLD_CONDITIONS or 'normal operations'
+```
+
+Benefits:
+- Reproducible testing without code changes
+- Demo different scenarios easily
+- Version-controlled test conditions
+- Simple toggle for production
+
+**Graceful Fallback (No API Key):**
+
+When `APILOGICSERVER_CHATGPT_APIKEY` is missing, system continues working:
+
+- ✅ Uses deterministic fallback logic
+- ✅ Copilot infers fallback from optimization criteria:
+  - "optimize for cost" → choose lowest cost
+  - "optimize for speed" → choose shortest time
+  - "optimize for reliability" → choose highest rated
+  - No optimization → choose first available
+- ✅ Stores reasoning: "Fallback: no API key available, using [strategy]"
+- ✅ Complete audit trail maintained
+
+This enables:
+- Development without API key
+- Demos without burning credits
+- Production resilience if OpenAI down
+- Cost control
+
+**Scope Validation:**
+
+Probabilistic rules are for **value computation and selection** only.
+
+✅ **Valid requests:**
+- "choose supplier based on cost and lead time"
+- "set price considering market conditions"
+- "select route optimizing for delivery time"
+
+❌ **Invalid requests (will ERROR):**
+- "ensure all customers are happy" (subjective, not computable)
+- "make supplier reliable" (action, not decision)
+- "predict customer churn" (ML model, not selection)
+- "guarantee quality" (too vague)
+
+Copilot will fail clearly:
+```
+Error: Cannot implement "ensure customers are happy"
+
+Reason: Not a computable value or selection decision.
+
+Probabilistic rules can:
+✅ Select from concrete candidates
+✅ Compute based on measurable factors
+
+They cannot:
+❌ Ensure subjective states
+❌ Make open-ended predictions
+
+Please reformulate as a selection or computation.
+```
+
+**User action:** Run migration, restart server
+
+**Result:** Add Egyptian Cotton Sheets → AI selects NJ supplier ($205) over Near East ($105) due to Suez Canal → Logic cascades → Credit validated → Complete audit trail in SysSupplierReq.
+
+**Key:** One prompt, complete implementation (including table creation), no manual coding.
+
+---
+
 ## The Target: Complete Working System from One Prompt
 
-**Critical Context:** This feature enables `als genai create` to generate a **complete, ready-to-run system** from a single natural language prompt:
+**Critical Context for Scenario 1:** This feature enables `als genai create` to generate a **complete, ready-to-run system** from a single natural language prompt:
 
 ```bash
 als genai create --using prompt.txt
