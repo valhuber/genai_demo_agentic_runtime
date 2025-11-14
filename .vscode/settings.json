@@ -18,5 +18,5 @@
     "workbench.editorAssociations": {
         "*.md": "vscode.markdown.preview.editor"
     },
-    "dbmlERDPreviewer.preferredTheme": "dark"
+    "dbmlERDPreviewer.preferredTheme": "light"
 }
